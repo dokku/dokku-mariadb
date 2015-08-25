@@ -11,7 +11,7 @@ Official mariadb plugin for dokku. Currently installs mariadb 10.0.21.
 
 ```
 cd /var/lib/dokku/plugins
-git clone https://github.com/dokku/dokku-mariadb-plugin.git mariadb
+git clone https://github.com/dokku/dokku-mariadb.git mariadb
 dokku plugins-install-dependencies
 dokku plugins-install
 ```
