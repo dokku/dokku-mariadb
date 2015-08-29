@@ -2,16 +2,7 @@
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 source "$(dirname "$0")/../common/functions"
 source "$(dirname "$0")/functions"
-
-MARIADB_IMAGE=${MARIADB_IMAGE:="mariadb"}
-MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="10.0.21"}
-MARIADB_ROOT=/var/lib/dokku/services/mariadb
-
-PLUGIN_COMMAND_PREFIX="mariadb"
-PLUGIN_DATA_ROOT=$MARIADB_ROOT
-PLUGIN_SERVICE="MariaDB"
-PLUGIN_IMAGE=$MARIADB_IMAGE
-PLUGIN_IMAGE_VERSION=$MARIADB_IMAGE_VERSION
+source "$(dirname "$0")/config"
 
 if [[ ! -d $PLUGIN_DATA_ROOT ]]; then
   dokku_log_fail "$PLUGIN_SERVICE: Please run: sudo dokku plugins-install"

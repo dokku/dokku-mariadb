@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
-
-MARIADB_IMAGE="mariadb"
-MARIADB_IMAGE_VERSION=10.0.21
-MARIADB_ROOT=/var/lib/dokku/services/mariadb
-
-PLUGIN_DATA_ROOT=$MARIADB_ROOT
-PLUGIN_SERVICE="MariaDB"
-PLUGIN_IMAGE=$MARIADB_IMAGE
-PLUGIN_IMAGE_VERSION=$MARIADB_IMAGE_VERSION
+source "$(dirname "$0")/config"
 
 if ! docker images | grep -e "^$PLUGIN_IMAGE " | grep -q $PLUGIN_IMAGE_VERSION ; then
   docker pull $PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION
