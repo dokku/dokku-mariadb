@@ -25,14 +25,16 @@ mariadb:connect <name>           Connect via mariadb to a mariadb service
 mariadb:create <name>            Create a mariadb service
 mariadb:destroy <name>           Delete the service and stop its container if there are no links left
 mariadb:export <name>            Export a dump of the mariadb service database
-mariadb:expose <name> <port>     NOT IMPLEMENTED
+mariadb:expose <name> [port]     Expose a mariadb service on custom port if provided (random port otherwise)
 mariadb:import <name> <file>     NOT IMPLEMENTED
 mariadb:info <name>              Print the connection information
 mariadb:link <name> <app>        Link the mariadb service to the app
 mariadb:list                     List all mariadb services
 mariadb:logs <name> [-t]         Print the most recent log(s) for this service
-mariadb:restart <name>           Graceful shutdown and restart of the service container
-mariadb:unexpose <name> <port>   NOT IMPLEMENTED
+mariadb:restart <name>           Graceful shutdown and restart of the mariadb service container
+mariadb:start <name>             Start a previously stopped mariadb service
+mariadb:stop <name>              Stop a running mariadb service
+mariadb:unexpose <name>          Unexpose a previously exposed mariadb service
 mariadb:unlink <name> <app>      Unlink the mariadb service from the app
 ```
 
@@ -65,7 +67,7 @@ dokku mariadb:link lolipop playground
 # the above will expose the following environment variables
 #
 #   DATABASE_URL=mariadb://mariadb:SOME_PASSWORD@172.17.0.1:3306/lolipop
-#   DATABASE_NAME=/playground/DATABASE
+#   DATABASE_NAME=/lolipop/DATABASE
 #   DATABASE_PORT=tcp://172.17.0.1:3306
 #   DATABASE_PORT_3306_TCP=tcp://172.17.0.1:3306
 #   DATABASE_PORT_3306_TCP_PROTO=tcp
@@ -85,7 +87,7 @@ dokku mariadb:logs lolipop
 dokku mariadb:logs lolipop -t # to tail
 
 # finally, you can destroy the container
-dokku mariadb:destroy playground
+dokku mariadb:destroy lolipop
 ```
 
 ## todo
