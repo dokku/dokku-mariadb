@@ -93,5 +93,4 @@ dokku mariadb:destroy lolipop
 ## todo
 
 - implement mariadb:clone
-- implement mariadb:expose
 - implement mariadb:import
