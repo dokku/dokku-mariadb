@@ -21,9 +21,10 @@ case "$1" in
       exit 0
     else
       echo "CONTAINER ID        IMAGE                      COMMAND                CREATED             STATUS                         PORTS               NAMES"
-      echo "4eeaae231d5e        elasticsearch:1.7.1        \"/docker-entrypoint.   11 seconds ago       Up 10 seconds       9200/tcp, 9300/tcp               dokku.elasticsearch.l"      echo "ef27fec191ba        memcached:1.4.24           \"/entrypoint.sh memc   7 seconds ago        Up 6 seconds        11211/tcp                        dokku.memcached.l"
+      echo "4eeaae231d5e        elasticsearch:1.7.1        \"/docker-entrypoint.   11 seconds ago       Up 10 seconds       9200/tcp, 9300/tcp               dokku.elasticsearch.l"
+      echo "ef27fec191ba        memcached:1.4.24           \"/entrypoint.sh memc   11 seconds ago       Up 10 seconds       11211/tcp                        dokku.memcached.l"
       echo "94df08fe5550        mariadb:10.0.21            \"/docker-entrypoint.   11 seconds ago       Up 10 seconds       3306/tcp                         dokku.mariadb.l"
-      echo "ef27fec191ba        memcached:1.4.24           \"/entrypoint.sh memc   42 seconds ago       Up 41 seconds       11211/tcp                        dokku.memcached.l"
+      echo "ef27fec191ba        memcached:1.4.24           \"/entrypoint.sh memc   11 seconds ago       Up 10 seconds       11211/tcp                        dokku.memcached.l"
       echo "c0f74fc90377        mongo:3.1.6                \"/entrypoint.sh mong   11 seconds ago       Up 10 seconds       27017/tcp                        dokku.mongo.l"
       echo "0f33b1c86da9        mysql:5.7                  \"/entrypoint.sh mysq   11 seconds ago       Up 10 seconds       3306/tcp                         dokku.mysql.l"
       echo "7f899b723c08        postgres:9.5               \"/docker-entrypoint.   11 seconds ago       Up 10 seconds       5432/tcp                         dokku.postgres.l"
