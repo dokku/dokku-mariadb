@@ -119,7 +119,7 @@ case "$1" in
     PASSWORD=$(cat "$SERVICE_ROOT/PASSWORD")
     IP=$(get_container_ip "$ID")
 
-    mysqldump --host "$IP" --port 3306 --user mariadb --password "$PASSWORD" "$SERVICE"
+    mysqldump --host="$IP" --port=3306 --user=mariadb --password="$PASSWORD" --databases "$SERVICE"
     ;;
 
   $PLUGIN_COMMAND_PREFIX:import)
@@ -164,7 +164,7 @@ case "$1" in
     ID=$(cat "$SERVICE_ROOT/ID")
     IP=$(get_container_ip "$ID")
     PASSWORD=$(cat "$SERVICE_ROOT/PASSWORD")
-    mysql --host "$IP" --port 3306 --user mariadb -password "$PASSWORD"
+    mysql --host="$IP" --port=3306 --user=mysql --password="$PASSWORD" --database="$SERVICE"
     ;;
 
   $PLUGIN_COMMAND_PREFIX:info)
