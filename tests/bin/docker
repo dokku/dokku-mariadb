@@ -20,8 +20,8 @@ case "$1" in
       echo "1479bbd60ade8a92617d2aeb4935bd3ff3179bd0fd71c22c3102c421f4bc221f"
       exit 0
     else
-      echo "CONTAINER ID        IMAGE                      COMMAND                CREATED             STATUS              PORTS               NAMES"
-      echo "testid              redis:3.0.3                \"/entrypoint.sh redi   5 minutes ago       Up 5 minutes                   6379/tcp            dokku.redis.l"
+      echo "CONTAINER ID        IMAGE                      COMMAND                CREATED             STATUS                         PORTS               NAMES"
+      echo "mariadb             mariadb:10.0.21            \"/docker-entrypoint.   10 seconds ago      Up 10 seconds                  3306/tcp            dokku.mariadb.l"
     fi
     ;;
   exec)
@@ -38,7 +38,7 @@ case "$1" in
     ;;
   images)
     echo "REPOSITORY                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE"
-    echo "redis                     3.0.3               9216d5a4eec8        13 days ago         109.3 MB"
+    echo "mariadb                   10.0.21             f2485761e714        11 days ago         302.2 MB"
     ;;
   pull)
     exit 0
