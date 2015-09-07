@@ -1,4 +1,4 @@
-# dokku mariadb (beta)
+# dokku mariadb (beta) [![Build Status](https://img.shields.io/travis/dokku/dokku-mariadb.svg?branch=master "Build Status")](https://travis-ci.org/dokku/dokku-mariadb) [![IRC Network](https://img.shields.io/badge/irc-freenode-blue.svg "IRC Freenode")](https://webchat.freenode.net/?channels=dokku)
 
 Official mariadb plugin for dokku. Currently installs mariadb 10.0.21.
 
