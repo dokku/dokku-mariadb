@@ -26,8 +26,8 @@ case "$1" in
     fi
 
     mkdir -p "$SERVICE_ROOT" || dokku_log_fail "Unable to create service directory"
-    rootpassword=$(openssl rand -hex 16)
-    password=$(openssl rand -hex 16)
+    rootpassword=$(openssl rand -hex 8)
+    password=$(openssl rand -hex 8)
     echo "$rootpassword" > "$SERVICE_ROOT/ROOTPASSWORD"
     echo "$password" > "$SERVICE_ROOT/PASSWORD"
     touch "$LINKS_FILE"
