@@ -25,6 +25,6 @@ teardown() {
   export ECHO_DOCKER_COMMAND="true"
   run dokku "$PLUGIN_COMMAND_PREFIX:connect" l
   password="$(cat "$PLUGIN_DATA_ROOT/l/PASSWORD")"
-  assert_output "docker exec -it dokku.mariadb.l env TERM=$TERM mysql --host=localhost --user=mariadb --password=$password --database=l"
+  assert_output "docker exec -it dokku.mariadb.l env TERM=$TERM mysql --user=mariadb --password=$password --database=l"
 }
 

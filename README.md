@@ -20,13 +20,13 @@ dokku plugins-install
 
 ```
 mariadb:alias <name> <alias>     Set an alias for the docker link
-mariadb:clone <name> <new-name>  NOT IMPLEMENTED
+mariadb:clone <name> <new-name>  Create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <name>           Connect via mariadb to a mariadb service
 mariadb:create <name>            Create a mariadb service
 mariadb:destroy <name>           Delete the service and stop its container if there are no links left
 mariadb:export <name>            Export a dump of the mariadb service database
 mariadb:expose <name> [port]     Expose a mariadb service on custom port if provided (random port otherwise)
-mariadb:import <name> <file>     NOT IMPLEMENTED
+mariadb:import <name> < <file>   Import a dump into the mariadb service database
 mariadb:info <name>              Print the connection information
 mariadb:link <name> <app>        Link the mariadb service to the app
 mariadb:list                     List all mariadb services
@@ -85,6 +85,15 @@ dokku mariadb:unlink lolipop playground
 # you can tail logs for a particular service
 dokku mariadb:logs lolipop
 dokku mariadb:logs lolipop -t # to tail
+
+# you can dump the database
+dokku mariadb:export lolipop > lolipop.sql
+
+# you can import a dump
+dokku mariadb:import lolipop < database.sql
+
+# you can clone an existing database to a new one
+dokku mariadb:clone lolipop new_database
 
 # finally, you can destroy the container
 dokku mariadb:destroy lolipop
