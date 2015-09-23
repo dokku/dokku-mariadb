@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 export MARIADB_IMAGE=${MARIADB_IMAGE:="mariadb"}
 export MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="10.0.21"}
-export MARIADB_ROOT=/var/lib/dokku/services/mariadb
+export MARIADB_ROOT=${MARIADB_ROOT:="/var/lib/dokku/services/mariadb"}
 
 export PLUGIN_COMMAND_PREFIX="mariadb"
-export PLUGIN_DATA_ROOT=${PLUGIN_DATA_ROOT:="$MARIADB_ROOT"}
+export PLUGIN_DATA_ROOT=$MARIADB_ROOT
 export PLUGIN_DATASTORE_PORTS=(3306)
 export PLUGIN_DEFAULT_ALIAS="DATABASE"
 export PLUGIN_IMAGE=$MARIADB_IMAGE
