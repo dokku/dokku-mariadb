@@ -77,6 +77,10 @@ dokku mariadb:link lolipop playground
 #   DATABASE_PORT_3306_TCP_PORT=3306
 #   DATABASE_PORT_3306_TCP_ADDR=172.17.0.1
 
+# you can examine the environment variables
+# using our 'playground' app's env command
+dokku run playground env
+
 # you can customize the environment
 # variables through a custom docker link alias
 dokku mariadb:alias lolipop MARIADB_DATABASE
