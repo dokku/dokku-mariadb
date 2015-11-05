@@ -24,7 +24,7 @@ dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 ```
 mariadb:clone <name> <new-name>  Create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <name>           Connect via mariadb to a mariadb service
-mariadb:create <name>            Create a mariadb service
+mariadb:create <name>            Create a mariadb service with environment variables
 mariadb:destroy <name>           Delete the service and stop its container if there are no links left
 mariadb:export <name>            Export a dump of the mariadb service database
 mariadb:expose <name> [port]     Expose a mariadb service on custom port if provided (random port otherwise)
@@ -53,6 +53,13 @@ dokku mariadb:create lolipop
 # official mariadb image
 export MARIADB_IMAGE="mariadb"
 export MARIADB_IMAGE_VERSION="5.5"
+
+# you can also specify custom environment
+# variables to start the mariadb service
+# in semi-colon separated forma
+export MARIADB_CUSTOM_ENV="USER=alpha;HOST=beta"
+
+# create a mariadb service
 dokku mariadb:create lolipop
 
 # get connection information as follows
