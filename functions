@@ -233,7 +233,7 @@ service_start() {
     service_port_unpause "$SERVICE"
     dokku_log_info2 "Container started"
   elif $IMAGE_EXISTS && [[ -n $ROOTPASSWORD && -n $PASSWORD ]]; then
-    ID=$(docker run --name "$SERVICE_NAME" -v "$SERVICE_ROOT/data:/var/lib/mysql" -e "MYSQL_ROOT_PASSWORD=$ROOTPASSWORD" -e MYSQL_USER=mariadb -e "MYSQL_PASSWORD=$PASSWORD" -e "MYSQL_DATABASE=$SERVICE" -d --restart always --label dokku=service --label dokku.service=mariadb "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION")
+    ID=$(docker run --name "$SERVICE_NAME" -v "$SERVICE_ROOT/data:/var/lib/mysql" -e "MYSQL_ROOT_PASSWORD=$ROOTPASSWORD" -e MYSQL_USER=mariadb -e "MYSQL_PASSWORD=$PASSWORD" -e "MYSQL_DATABASE=$SERVICE" --env-file="$SERVICE_ROOT/ENV" -d --restart always --label dokku=service --label dokku.service=mariadb "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION")
     echo "$ID" > "$SERVICE_ROOT/ID"
 
     dokku_log_verbose_quiet "Waiting for container to be ready"
