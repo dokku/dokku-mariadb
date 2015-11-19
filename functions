@@ -219,11 +219,11 @@ service_start() {
   local SERVICE="$1"
   local SERVICE_ROOT="$PLUGIN_DATA_ROOT/$SERVICE"
   local SERVICE_NAME=$(get_service_name "$SERVICE")
-  local ID=$(docker ps -f status=running | grep "$SERVICE_NAME" | awk '{print $1}') || true
+  local ID=$(docker ps -f status=running | grep -e "$SERVICE_NAME$" | awk '{print $1}') || true
   [[ -n $ID ]] && dokku_log_warn "Service is already started" && return 0
 
   dokku_log_info1_quiet "Starting container"
-  local PREVIOUS_ID=$(docker ps -f status=exited | grep "$SERVICE_NAME" | awk '{print $1}') || true
+  local PREVIOUS_ID=$(docker ps -f status=exited | grep -e "$SERVICE_NAME$" | awk '{print $1}') || true
   local IMAGE_EXISTS=$(docker images | grep -e "^$PLUGIN_IMAGE " | grep -q " $PLUGIN_IMAGE_VERSION " && true)
   local ROOTPASSWORD=$(cat "$SERVICE_ROOT/ROOTPASSWORD")
   local PASSWORD=$(cat "$SERVICE_ROOT/PASSWORD")
@@ -250,7 +250,7 @@ service_stop() {
   local SERVICE="$1"
   local SERVICE_ROOT="$PLUGIN_DATA_ROOT/$SERVICE";
   local SERVICE_NAME=$(get_service_name "$SERVICE")
-  local ID=$(docker ps -f status=running | grep "$SERVICE_NAME" | awk '{print $1}') || true
+  local ID=$(docker ps -f status=running | grep -e "$SERVICE_NAME$" | awk '{print $1}') || true
   [[ -z $ID ]] && dokku_log_warn "Service is already stopped" && return 0
 
   if [[ -n $ID ]]; then
