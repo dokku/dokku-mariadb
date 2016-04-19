@@ -53,3 +53,11 @@ teardown() {
   run dokku config my_app
   assert_contains "${lines[*]}" "DOKKU_MARIADB_"
 }
+
+@test "($PLUGIN_COMMAND_PREFIX:promote) uses MARIADB_DATABASE_SCHEME variable" {
+  password="$(cat "$PLUGIN_DATA_ROOT/l/PASSWORD")"
+  dokku config:set my_app "MARIADB_DATABASE_SCHEME=mysql2" "DATABASE_URL=mysql://u:p@host:3306/db" "DOKKU_MARIADB_BLUE_URL=mysql2://mariadb:$password@dokku-mariadb-l:3306/l"
+  dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
+  url=$(dokku config:get my_app DATABASE_URL)
+  assert_contains "$url" "mysql2://mariadb:$password@dokku-mariadb-l:3306/l"
+}
