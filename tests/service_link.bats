@@ -59,3 +59,12 @@ teardown() {
   assert_contains "${lines[*]}" "--link dokku.mariadb.l:dokku-mariadb-l"
   dokku "$PLUGIN_COMMAND_PREFIX:unlink" l my_app
 }
+
+@test "($PLUGIN_COMMAND_PREFIX:link) uses apps MARIADB_DATABASE_SCHEME variable" {
+  dokku config:set my_app MARIADB_DATABASE_SCHEME=mariadb2
+  dokku "$PLUGIN_COMMAND_PREFIX:link" l my_app
+  url=$(dokku config:get my_app DATABASE_URL)
+  password="$(cat "$PLUGIN_DATA_ROOT/l/PASSWORD")"
+  assert_contains "$url" "mariadb2://mariadb:$password@dokku-mariadb-l:3306/l"
+  dokku "$PLUGIN_COMMAND_PREFIX:unlink" l my_app
+}

@@ -128,3 +128,30 @@ dokku mariadb:clone lolipop new_database
 # finally, you can destroy the container
 dokku mariadb:destroy lolipop
 ```
+
+## Changing database adapter
+
+It's possible to change the protocol for DATABASE_URL by setting
+the environment variable MARIADB_DATABASE_SCHEME on the app:
+
+```
+dokku config:set playground MARIADB_DATABASE_SCHEME=mariadb2
+dokku mariadb:link lolipop playground
+```
+
+Will cause DATABASE_URL to be set as
+mariadb2://mariadb:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
+
+CAUTION: Changing MARIADB_DATABASE_SCHEME after linking will cause dokku to
+believe the mariadb is not linked when attempting to use `dokku mariadb:unlink`
+or `dokku mariadb:promote`.
+You should be able to fix this by
+
+- Changing MARIADB_URL manually to the new value.
+
+OR
+
+- Set MARIADB_DATABASE_SCHEME back to its original setting
+- Unlink the service
+- Change MARIADB_DATABASE_SCHEME to the desired setting
+- Relink the service
