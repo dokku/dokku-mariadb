@@ -384,6 +384,6 @@ service_linked_apps() {
 
 update_plugin_scheme_for_app() {
   local APP=$1
-  local MARIADB_DATABASE_SCHEME=$(config_get $APP MARIADB_DATABASE_SCHEME)
+  local MARIADB_DATABASE_SCHEME=$(config_get "$APP" MARIADB_DATABASE_SCHEME)
   PLUGIN_SCHEME=${MARIADB_DATABASE_SCHEME:-$PLUGIN_SCHEME}
 }
