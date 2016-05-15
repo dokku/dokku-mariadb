@@ -84,7 +84,10 @@ case "$1" in
     ;;
 
   help | $PLUGIN_COMMAND_PREFIX:help)
-    HELP=$(cat<<EOF
+    help_content_func() {
+      # shellcheck disable=SC2034
+      declare desc="return $PLUGIN_COMMAND_PREFIX plugin help content"
+      cat<<help_content
     $PLUGIN_COMMAND_PREFIX:create <name>, Create a $PLUGIN_SERVICE service
     $PLUGIN_COMMAND_PREFIX:destroy <name>, Delete the $PLUGIN_SERVICE service and stop its container if there are no links left
     $PLUGIN_COMMAND_PREFIX:link <name> <app>, Link the $PLUGIN_SERVICE service to the app
@@ -102,12 +105,32 @@ case "$1" in
     $PLUGIN_COMMAND_PREFIX:start <name>, Start a previously stopped $PLUGIN_SERVICE service
     $PLUGIN_COMMAND_PREFIX:stop <name>, Stop a running $PLUGIN_SERVICE service
     $PLUGIN_COMMAND_PREFIX:promote <name> <app>, Promote service <name> as ${PLUGIN_DEFAULT_ALIAS}_URL in <app>
-EOF
-)
-    if [[ -n $DOKKU_API_VERSION ]]; then
-      echo "$HELP"
+help_content
+    }
+
+    help_list_func() {
+      # shellcheck disable=SC2034
+      declare desc="return $PLUGIN_COMMAND_PREFIX plugin help content"
+      cat<<help_list
+      NAME, VERSION, STATUS, EXPOSED PORTS, LINKS
+      service-name, $PLUGIN_COMMAND_PREFIX:$PLUGIN_IMAGE_VERSION, running, -, app-name
+help_list
+    }
+
+    if [[ $1 = "mariadb:help" ]] ; then
+      echo -e "Usage: dokku $PLUGIN_COMMAND_PREFIX[:COMMAND]"
+      echo ''
+      echo 'List your mariadb services.'
+      echo ''
+      echo 'Example:'
+      echo ''
+      echo '$ dokku mariadb:list'
+      help_list_func | column -c5 -t -s,
+      echo ''
+      echo 'Additional commands:'
+      help_content_func | sort | column -c2 -t -s,
     else
-      cat && echo "$HELP"
+      help_content_func
     fi
     ;;
 
