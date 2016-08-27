@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 export MARIADB_IMAGE=${MARIADB_IMAGE:="mariadb"}
-export MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="10.1.13"}
+export MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="10.1.16"}
 export MARIADB_ROOT=${MARIADB_ROOT:="/var/lib/dokku/services/mariadb"}
 
 export PLUGIN_COMMAND_PREFIX="mariadb"
