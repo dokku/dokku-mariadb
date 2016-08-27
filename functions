@@ -366,6 +366,8 @@ service_create() {
   fi
 
   mkdir -p "$SERVICE_ROOT" || dokku_log_fail "Unable to create service directory"
+  mkdir -p "$SERVICE_ROOT/data" || dokku_log_fail "Unable to create service data directory"
+  mkdir -p "$SERVICE_ROOT/config" || dokku_log_fail "Unable to create service config directory"
   rootpassword=$(openssl rand -hex 8)
   password=$(openssl rand -hex 8)
   echo "$rootpassword" > "$SERVICE_ROOT/ROOTPASSWORD"
