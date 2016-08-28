@@ -48,17 +48,25 @@ dokku mariadb:create lolipop
 # official mariadb image
 export MARIADB_IMAGE="mariadb"
 export MARIADB_IMAGE_VERSION="5.5"
+dokku mariadb:create lolipop
 
 # you can also specify custom environment
 # variables to start the mariadb service
 # in semi-colon separated forma
 export MARIADB_CUSTOM_ENV="USER=alpha;HOST=beta"
-
-# create a mariadb service
 dokku mariadb:create lolipop
 
 # get connection information as follows
 dokku mariadb:info lolipop
+
+# you can also retrieve a specific piece of service info via flags
+dokku mariadb:info lolipop --config-dir
+dokku mariadb:info lolipop --data-dir
+dokku mariadb:info lolipop --dsn
+dokku mariadb:info lolipop --exposed-ports
+dokku mariadb:info lolipop --links
+dokku mariadb:info lolipop --status
+dokku mariadb:info lolipop --version
 
 # a mariadb service can be linked to a
 # container this will use native docker
