@@ -67,6 +67,7 @@ dokku mariadb:info lolipop --exposed-ports
 dokku mariadb:info lolipop --id
 dokku mariadb:info lolipop --internal-ip
 dokku mariadb:info lolipop --links
+dokku mariadb:info lolipop --service-root
 dokku mariadb:info lolipop --status
 dokku mariadb:info lolipop --version
 
