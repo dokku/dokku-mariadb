@@ -21,6 +21,7 @@ mariadb:clone <name> <new-name>  Create container <new-name> then copy data from
 mariadb:connect <name>           Connect via mariadb to a mariadb service
 mariadb:create <name>            Create a mariadb service with environment variables
 mariadb:destroy <name>           Delete the service and stop its container if there are no links left
+mariadb:enter <name> [command]   Enter a running couchdb service or run a command
 mariadb:export <name> > <file>   Export a dump of the mariadb service database
 mariadb:expose <name> [port]     Expose a mariadb service on custom port if provided (random port otherwise)
 mariadb:import <name> < <file>   Import a dump into the mariadb service database
@@ -70,6 +71,14 @@ dokku mariadb:info lolipop --links
 dokku mariadb:info lolipop --service-root
 dokku mariadb:info lolipop --status
 dokku mariadb:info lolipop --version
+
+# a bash prompt can be opened against a running service
+# filesystem changes will not be saved to disk
+dokku mariadb:enter lolipop
+
+# you may also run a command directly against the service
+# filesystem changes will not be saved to disk
+dokku mariadb:enter lolipop ls -lah /
 
 # a mariadb service can be linked to a
 # container this will use native docker
