@@ -170,3 +170,13 @@ OR
 - Unlink the service
 - Change MARIADB_DATABASE_SCHEME to the desired setting
 - Relink the service
+
+## Custom Configuration
+
+It is possible to add custom configuration settings.
+`/etc/mysql/conf.d` is mapped to `/var/lib/dokku/mariadb/[YOURDBNAME]/config`
+
+Any files placed in this folder will be loaded. If a file is changed you will need
+to reload your database for the changes to take effect.
+
+For more information on configuration options see https://mariadb.com/kb/en/mariadb/mysqld-configuration-files-and-groups/
