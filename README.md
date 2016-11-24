@@ -20,7 +20,7 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 mariadb:backup <name> <bucket>   Create a backup of the mariadb service to an existing s3 bucket
 mariadb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> Sets up authentication for backups on the mariadb service
 mariadb:backup-deauth <name>     Removes backup authentication for the mariadb service
-mariadb:backup-schedule <name> <schedule>  <aws_access_key_id> <aws_secret_access_key> <bucket> Schedules a backup of the mariadb service
+mariadb:backup-schedule <name> <schedule> <bucket> Schedules a backup of the mariadb service
 mariadb:backup-unschedule <name> Unschedules the backup of the mariadb service
 mariadb:clone <name> <new-name>  Create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <name>           Connect via mariadb to a mariadb service
@@ -195,6 +195,7 @@ dokku mariadb:backup-deauth lolipop
 dokku mariadb:backup lolipop BUCKET_NAME
 
 # schedule a backup
+# CRON_SCHEDULE is a crontab expression, eg. "0 3 * * *" for each day at 3am
 dokku mariadb:backup-schedule lolipop CRON_SCHEDULE BUCKET_NAME
 
 # remove the scheduled backup from cron
