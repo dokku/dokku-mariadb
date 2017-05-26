@@ -17,6 +17,11 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 ## commands
 
 ```
+mariadb:backup <name> <bucket>   Create a backup of the mariadb service to an existing s3 bucket
+mariadb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> Sets up authentication for backups on the mariadb service
+mariadb:backup-deauth <name>     Removes backup authentication for the mariadb service
+mariadb:backup-schedule <name> <schedule> <bucket> Schedules a backup of the mariadb service
+mariadb:backup-unschedule <name> Unschedules the backup of the mariadb service
 mariadb:clone <name> <new-name>  Create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <name>           Connect via mariadb to a mariadb service
 mariadb:create <name>            Create a mariadb service with environment variables
@@ -171,6 +176,7 @@ OR
 - Change MARIADB_DATABASE_SCHEME to the desired setting
 - Relink the service
 
+
 ## Custom Configuration
 
 It is possible to add custom configuration settings.
@@ -180,3 +186,30 @@ Any files placed in this folder will be loaded. If a file is changed you will ne
 to reload your database for the changes to take effect.
 
 For more information on configuration options see https://mariadb.com/kb/en/mariadb/mysqld-configuration-files-and-groups/
+
+## Backups
+
+Datastore backups are supported via AWS S3. The only supported region is `us-east-1`, and using an S3 bucket in another region will result in an error.
+
+> If you would like to sponsor work to enable support for other regions, please contact [@josegonzalez](http://github.com/josegonzalez/).
+
+Backups can be performed using the backup commands:
+
+```
+# setup s3 backup authentication
+dokku mariadb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+
+# remove s3 authentication
+dokku mariadb:backup-deauth lolipop
+
+# backup the `lolipop` service to the `BUCKET_NAME` bucket on AWS
+dokku mariadb:backup lolipop BUCKET_NAME
+
+# schedule a backup
+# CRON_SCHEDULE is a crontab expression, eg. "0 3 * * *" for each day at 3am
+dokku mariadb:backup-schedule lolipop CRON_SCHEDULE BUCKET_NAME
+
+# remove the scheduled backup from cron
+dokku mariadb:backup-unschedule lolipop
+```
+
