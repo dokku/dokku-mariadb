@@ -152,15 +152,15 @@ service_backup_auth() {
   echo "$AWS_ACCESS_KEY_ID" > "${SERVICE_BACKUP_ROOT}/AWS_ACCESS_KEY_ID"
   echo "$AWS_SECRET_ACCESS_KEY" > "${SERVICE_BACKUP_ROOT}/AWS_SECRET_ACCESS_KEY"
 
-  if [ "x$AWS_DEFAULT_REGION" != "x" ]; then
+  if [ -n "$AWS_DEFAULT_REGION" ]; then
     echo "$AWS_DEFAULT_REGION" > "${SERVICE_BACKUP_ROOT}/AWS_DEFAULT_REGION"
   fi
 
-  if [ "x$AWS_SIGNATURE_VERSION" != "x" ]; then
+  if [ -n "$AWS_SIGNATURE_VERSION" ]; then
     echo "$AWS_SIGNATURE_VERSION" > "${SERVICE_BACKUP_ROOT}/AWS_SIGNATURE_VERSION"
   fi
 
-  if [ "x$ENDPOINT_URL" != "x" ]; then
+  if [ -n "$ENDPOINT_URL" ]; then
     echo "$ENDPOINT_URL" > "${SERVICE_BACKUP_ROOT}/ENDPOINT_URL"
   fi
 }
