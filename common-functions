@@ -143,8 +143,7 @@ service_backup() {
 
 service_backup_auth() {
   declare desc="Sets up authentication"
-  declare SERVICE="$1" AWS_ACCESS_KEY_ID="$2" AWS_SECRET_ACCESS_KEY="$3" AWS_DEFAULT_REGION="$4"
-  declare AWS_SIGNATURE_VERSION="$5" ENDPOINT_URL="$6"
+  declare SERVICE="$1" AWS_ACCESS_KEY_ID="$2" AWS_SECRET_ACCESS_KEY="$3" AWS_DEFAULT_REGION="$4" AWS_SIGNATURE_VERSION="$5" ENDPOINT_URL="$6"
   local SERVICE_ROOT="${PLUGIN_DATA_ROOT}/${SERVICE}"
   local SERVICE_BACKUP_ROOT="${SERVICE_ROOT}/backup/"
 
