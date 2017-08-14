@@ -137,7 +137,8 @@ service_backup() {
     BACKUP_PARAMETERS="$BACKUP_PARAMETERS -e ENDPOINT_URL=$(cat "$BACKUP_CONFIG_ROOT/ENDPOINT_URL")"
   fi
 
-  docker run "$BACKUP_PARAMETERS" dokkupaas/s3backup:0.6.0
+  # shellcheck disable=SC2086
+  docker run $BACKUP_PARAMETERS dokkupaas/s3backup:0.6.0
 }
 
 service_backup_auth() {
