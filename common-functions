@@ -30,7 +30,9 @@ get_random_ports() {
     local port=$RANDOM
     local quit=0
     while [ "$quit" -ne 1 ]; do
-      if ! netstat -an | grep $port > /dev/null; then
+      netstat -an | grep $port > /dev/null
+      # shellcheck disable=SC2181
+      if [ $? -gt 0 ]; then
         quit=1
       else
         port=$((port + 1))
