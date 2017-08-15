@@ -138,7 +138,7 @@ service_backup() {
   fi
 
   # shellcheck disable=SC2086
-  docker run $BACKUP_PARAMETERS dokkupaas/s3backup:0.6.0
+  docker run $BACKUP_PARAMETERS dokkupaas/s3backup:0.7.0
 }
 
 service_backup_auth() {
