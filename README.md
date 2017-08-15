@@ -18,7 +18,7 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 
 ```
 mariadb:backup <name> <bucket>   Create a backup of the mariadb service to an existing s3 bucket
-mariadb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> Sets up authentication for backups on the mariadb service
+mariadb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_default_region>) (<aws_signature_version>) (<endpoint_url>) Sets up authentication for backups on the mariadb service
 mariadb:backup-deauth <name>     Removes backup authentication for the mariadb service
 mariadb:backup-schedule <name> <schedule> <bucket> Schedules a backup of the mariadb service
 mariadb:backup-unschedule <name> Unschedules the backup of the mariadb service
@@ -178,9 +178,7 @@ OR
 
 ## Backups
 
-Datastore backups are supported via AWS S3. The only supported region is `us-east-1`, and using an S3 bucket in another region will result in an error.
-
-> If you would like to sponsor work to enable support for other regions, please contact [@josegonzalez](http://github.com/josegonzalez/).
+Datastore backups are supported via AWS S3 and S3 compatible services like [minio](https://github.com/minio/minio).
 
 Backups can be performed using the backup commands:
 
@@ -200,4 +198,17 @@ dokku mariadb:backup-schedule lolipop CRON_SCHEDULE BUCKET_NAME
 
 # remove the scheduled backup from cron
 dokku mariadb:backup-unschedule lolipop
+```
+
+Backup auth can also be set up for different regions, signature versions and endpoints (e.g. for minio):
+
+```
+# setup s3 backup authentication with different region
+dokku mariadb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION
+
+# setup s3 backup authentication with different signature version and endpoint
+dokku mariadb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION AWS_SIGNATURE_VERSION ENDPOINT_URL
+
+# more specific example for minio auth
+dokku mariadb:backup-auth lolipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us-east-1 s3v4 https://YOURMINIOSERVICE
 ```
