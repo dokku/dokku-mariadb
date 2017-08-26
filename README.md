@@ -176,6 +176,17 @@ OR
 - Change MARIADB_DATABASE_SCHEME to the desired setting
 - Relink the service
 
+
+## Custom Configuration
+
+It is possible to add custom configuration settings.
+`/etc/mysql/conf.d` is mapped to the output of `dokku mariadb:info SERVICE --config-dir`
+
+Any files placed in this folder will be loaded. If a file is changed you will need
+to reload your database for the changes to take effect.
+
+For more information on configuration options see https://mariadb.com/kb/en/mariadb/mysqld-configuration-files-and-groups/
+
 ## Backups
 
 Datastore backups are supported via AWS S3 and S3 compatible services like [minio](https://github.com/minio/minio).
