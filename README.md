@@ -25,7 +25,7 @@ mariadb:backup-unschedule <name> Unschedules the backup of the mariadb service
 mariadb:clone <name> <new-name>  Create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <name>           Connect via mariadb to a mariadb service
 mariadb:create <name>            Create a mariadb service with environment variables
-mariadb:destroy <name>           Delete the service and stop its container if there are no links left
+mariadb:destroy <name>           Delete the service, delete the data and stop its container if there are no links left
 mariadb:enter <name> [command]   Enter or run a command in a running mariadb service container
 mariadb:export <name> > <file>   Export a dump of the mariadb service database
 mariadb:expose <name> [port]     Expose a mariadb service on custom port if provided (random port otherwise)
