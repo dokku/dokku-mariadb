@@ -17,7 +17,7 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 ## commands
 
 ```
-mariadb:backup <name> <bucket> [--use-iam] Create a backup of the mariadb service to an existing s3 bucket
+mariadb:backup <name> <bucket> (--use-iam) Create a backup of the mariadb service to an existing s3 bucket
 mariadb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_default_region>) (<aws_signature_version>) (<endpoint_url>) Sets up authentication for backups on the mariadb service
 mariadb:backup-deauth <name>     Removes backup authentication for the mariadb service
 mariadb:backup-schedule <name> <schedule> <bucket> Schedules a backup of the mariadb service
