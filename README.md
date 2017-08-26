@@ -177,7 +177,7 @@ OR
 - Relink the service
 
 
-## Custom Configuration
+## Configuration
 
 It is possible to add custom configuration settings.
 `/etc/mysql/conf.d` is mapped to the output of `dokku mariadb:info SERVICE --config-dir`
