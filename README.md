@@ -180,7 +180,7 @@ OR
 ## Custom Configuration
 
 It is possible to add custom configuration settings.
-`/etc/mysql/conf.d` is mapped to `/var/lib/dokku/mariadb/[YOURDBNAME]/config`
+`/etc/mysql/conf.d` is mapped to the output of `dokku mariadb:info SERVICE --config-dir`
 
 Any files placed in this folder will be loaded. If a file is changed you will need
 to reload your database for the changes to take effect.
