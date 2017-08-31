@@ -162,7 +162,7 @@ dokku mariadb:link lolipop playground
 Will cause DATABASE_URL to be set as
 mariadb2://mariadb:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
 
-CAUTION: Changing MARIADB_DATABASE_SCHEME after linking will cause dokku to
+**CAUTION:** Changing MARIADB_DATABASE_SCHEME after linking will cause dokku to
 believe the mariadb is not linked when attempting to use `dokku mariadb:unlink`
 or `dokku mariadb:promote`.
 You should be able to fix this by
@@ -186,6 +186,8 @@ Any files placed in this folder will be loaded. If a file is changed you will ne
 to reload your database for the changes to take effect.
 
 For more information on configuration options see https://mariadb.com/kb/en/mariadb/mysqld-configuration-files-and-groups/
+
+**CAUTION:** If you are using a custom mariadb image and there are already config files placed in `/etc/mysql/conf.d` within the image, they will be overwritten by the mount!
 
 ## Backups
 
