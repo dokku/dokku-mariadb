@@ -23,20 +23,20 @@ case "$1" in
     "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-deauth" "$@"
     ;;
 
-  $PLUGIN_COMMAND_PREFIX:backup-set-encryption)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-set-encryption" "$@"
-    ;;
-
-  $PLUGIN_COMMAND_PREFIX:backup-unset-encryption)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-unset-encryption" "$@"
-    ;;
-
   $PLUGIN_COMMAND_PREFIX:backup-schedule)
     "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-schedule" "$@"
     ;;
 
+  $PLUGIN_COMMAND_PREFIX:backup-set-encryption)
+    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-set-encryption" "$@"
+    ;;
+
   $PLUGIN_COMMAND_PREFIX:backup-unschedule)
     "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-unschedule" "$@"
+    ;;
+
+  $PLUGIN_COMMAND_PREFIX:backup-unset-encryption)
+    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-unset-encryption" "$@"
     ;;
 
   $PLUGIN_COMMAND_PREFIX:clone)

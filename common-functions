@@ -105,18 +105,18 @@ service_alternative_alias() {
 
 service_backup() {
   declare desc="Creates a backup of a service to an existing s3 bucket"
-  declare SERVICE="$1" BUCKET_NAME="$2" S3_FLAG="$3"
+  declare SERVICE="$1" BUCKET_NAME="$2" USE_IAM_OPTIONAL_FLAG="$3"
   local BACKUP_CONFIG_ROOT="$PLUGIN_DATA_ROOT/$SERVICE/backup"
   local BACKUP_ENCRYPTION_CONFIG_ROOT="$PLUGIN_DATA_ROOT/$SERVICE/backup-encryption"
   local AWS_ACCESS_KEY_ID_FILE="$BACKUP_CONFIG_ROOT/AWS_ACCESS_KEY_ID"
   local AWS_SECRET_ACCESS_KEY_FILE="$BACKUP_CONFIG_ROOT/AWS_SECRET_ACCESS_KEY"
   local BACKUP_PARAMETERS=""
 
-  if [[ -z "$S3_FLAG" ]]; then
+  if [[ -z "$USE_IAM_OPTIONAL_FLAG" ]]; then
     [[ ! -f "$AWS_ACCESS_KEY_ID_FILE" ]] && dokku_log_fail "Missing AWS_ACCESS_KEY_ID file"
     [[ ! -f "$AWS_SECRET_ACCESS_KEY_FILE" ]] && dokku_log_fail "Missing AWS_SECRET_ACCESS_KEY file"
     BACKUP_PARAMETERS="$BACKUP_PARAMETERS -e AWS_ACCESS_KEY_ID=$(cat "$AWS_ACCESS_KEY_ID_FILE") -e AWS_SECRET_ACCESS_KEY=$(cat "$AWS_SECRET_ACCESS_KEY_FILE")"
-  elif [[ $S3_FLAG != "--use-iam" ]]; then
+  elif [[ $USE_IAM_OPTIONAL_FLAG != "--use-iam" ]]; then
     dokku_log_fail "Provide AWS credentials or use the --use-iam flag"
   fi
 
