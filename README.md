@@ -187,7 +187,7 @@ to reload your database for the changes to take effect.
 
 For more information on configuration options see https://mariadb.com/kb/en/mariadb/mysqld-configuration-files-and-groups/
 
-**CAUTION:** If you are using a custom mariadb image and there are already config files placed in `/etc/mysql/conf.d` within the image, they will be overwritten by the mount!
+> Note: This plugin mounts a host directory into the container under `/etc/mysql/conf.d`. Custom images that have files in this directory will have those files overwritten by the mount.
 
 ## Backups
 
