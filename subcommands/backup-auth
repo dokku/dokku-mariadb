@@ -16,7 +16,7 @@ mariadb-backup-auth-cmd() {
   [[ -z "$AWS_SECRET_ACCESS_KEY" ]] && dokku_log_fail "Please specify an aws secret access key"
   verify_service_name "$SERVICE"
 
-  service_backup_auth $SERVICE $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $OPTIONAL_PARAMETERS
+  service_backup_auth "$SERVICE" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" $OPTIONAL_PARAMETERS
 }
 
 mariadb-backup-auth-cmd "$@"
