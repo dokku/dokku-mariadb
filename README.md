@@ -21,9 +21,10 @@ mariadb:backup <name> <bucket> (--use-iam) Create a backup of the mariadb servic
 mariadb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_default_region>) (<aws_signature_version>) (<endpoint_url>) Sets up authentication for backups on the mariadb service
 mariadb:backup-deauth <name>     Removes backup authentication for the mariadb service
 mariadb:backup-schedule <name> <schedule> <bucket> Schedules a backup of the mariadb service
-mariadb:backup-set-encryption <name> <encryption_key>, Sets up GPG encryption for future backups of the mariadb service
+mariadb:backup-schedule-cat <name> Cat the contents of the configured backup cronfile for the service
+mariadb:backup-set-encryption <name> <encryption_key> Sets up GPG encryption for future backups of the mariadb service
 mariadb:backup-unschedule <name> Unschedules the backup of the mariadb service
-mariadb:backup-unset-encryption <name>, Removes backup encryption for future backups of the mariadb service
+mariadb:backup-unset-encryption <name> Removes backup encryption for future backups of the mariadb service
 mariadb:clone <name> <new-name>  Create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <name>           Connect via mariadb to a mariadb service
 mariadb:create <name>            Create a mariadb service with environment variables
@@ -215,6 +216,9 @@ dokku mariadb:backup lolipop BUCKET_NAME
 # schedule a backup
 # CRON_SCHEDULE is a crontab expression, eg. "0 3 * * *" for each day at 3am
 dokku mariadb:backup-schedule lolipop CRON_SCHEDULE BUCKET_NAME
+
+# cat the contents of the configured backup cronfile for the service
+dokku mariadb:backup-schedule-cat lolipop
 
 # remove the scheduled backup from cron
 dokku mariadb:backup-unschedule lolipop
