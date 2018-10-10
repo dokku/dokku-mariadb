@@ -46,6 +46,7 @@ mariadb:start <name>             Start a previously stopped mariadb service
 mariadb:stop <name>              Stop a running mariadb service
 mariadb:unexpose <name>          Unexpose a previously exposed mariadb service
 mariadb:unlink <name> <app>      Unlink the mariadb service from the app
+mariadb:upgrade <name>           Upgrade service <service> to the specified version
 ```
 
 ## usage
