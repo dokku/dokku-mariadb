@@ -23,7 +23,7 @@ mariadb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_def
 mariadb:backup-deauth <name>     Removes backup authentication for the mariadb service
 mariadb:backup-schedule <name> <schedule> <bucket> Schedules a backup of the mariadb service
 mariadb:backup-schedule-cat <name> Cat the contents of the configured backup cronfile for the service
-mariadb:backup-set-encryption <name> <encryption_key> Sets up GPG encryption for future backups of the mariadb service
+mariadb:backup-set-encryption <name> <passphrase> Set a GPG passphrase for backups
 mariadb:backup-unschedule <name> Unschedules the backup of the mariadb service
 mariadb:backup-unset-encryption <name> Removes backup encryption for future backups of the mariadb service
 mariadb:clone <name> <new-name>  Create container <new-name> then copy data from <name> into <new-name>
