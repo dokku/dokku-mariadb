@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export MARIADB_IMAGE=${MARIADB_IMAGE:="mariadb"}
 export MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="10.3.0"}
-export MARIADB_ROOT=${MARIADB_ROOT:="/var/lib/dokku/services/mariadb"}
+export MARIADB_ROOT=${MARIADB_ROOT:="$DOKKU_LIB_ROOT/services/mariadb"}
 export MARIADB_HOST_ROOT=${MARIADB_HOST_ROOT:=$MARIADB_ROOT}
 
 export PLUGIN_UNIMPLEMENTED_SUBCOMMANDS=()
