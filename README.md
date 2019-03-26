@@ -10,7 +10,7 @@ Official mariadb plugin for dokku. Currently defaults to installing [mariadb 10.
 ## installation
 
 ```shell
-# on 0.4.x+
+# on 0.12.x+
 sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 ```
 
