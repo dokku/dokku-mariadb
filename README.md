@@ -35,7 +35,7 @@ mariadb:exists <service>                           # check if the mariadb servic
 mariadb:export <service>                           # export a dump of the mariadb service database
 mariadb:expose <service> <ports...>                # expose a mariadb service on custom port if provided (random port otherwise)
 mariadb:import <service>                           # import a dump into the mariadb service database
-mariadb:info <service> [--single-info-flag]        # print the connection information
+mariadb:info <service> [--single-info-flag]        # print the service information
 mariadb:link <service> <app> [--link-flags...]     # link the mariadb service to the app
 mariadb:linked <service> <app>                     # check if the mariadb service is linked to an app
 mariadb:links <service>                            # list all apps linked to the mariadb service
@@ -55,20 +55,7 @@ mariadb:upgrade <service> [--upgrade-flags...]     # upgrade service <service> t
 Help for any commands can be displayed by specifying the command as an argument to mariadb:help. Please consult the `mariadb:help` command for any undocumented commands.
 
 ### Basic Usage
-### list all mariadb services
 
-```shell
-# usage
-dokku mariadb:list 
-```
-
-examples:
-
-List all services:
-
-```shell
-dokku mariadb:list
-```
 ### create a mariadb service
 
 ```shell
@@ -76,15 +63,13 @@ dokku mariadb:list
 dokku mariadb:create <service> [--create-flags...]
 ```
 
-examples:
-
 Create a mariadb service named lolipop:
 
 ```shell
 dokku mariadb:create lolipop
 ```
 
-You can also specify the image and image version to use for the service. It *must* be compatible with the ${plugin_image} image. :
+You can also specify the image and image version to use for the service. It *must* be compatible with the ${plugin_image} image.
 
 ```shell
 export DATABASE_IMAGE="${PLUGIN_IMAGE}"
@@ -92,20 +77,19 @@ export DATABASE_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
 dokku mariadb:create lolipop
 ```
 
-You can also specify custom environment variables to start the mariadb service in semi-colon separated form. :
+You can also specify custom environment variables to start the mariadb service in semi-colon separated form.
 
 ```shell
 export DATABASE_CUSTOM_ENV="USER=alpha;HOST=beta"
 dokku mariadb:create lolipop
 ```
-### print the connection information
+
+### print the service information
 
 ```shell
 # usage
 dokku mariadb:info <service> [--single-info-flag]
 ```
-
-examples:
 
 Get connection information as follows:
 
@@ -127,14 +111,26 @@ dokku mariadb:info lolipop --service-root
 dokku mariadb:info lolipop --status
 dokku mariadb:info lolipop --version
 ```
+
+### list all mariadb services
+
+```shell
+# usage
+dokku mariadb:list 
+```
+
+List all services:
+
+```shell
+dokku mariadb:list
+```
+
 ### print the most recent log(s) for this service
 
 ```shell
 # usage
 dokku mariadb:logs <service> [-t|--tail]
 ```
-
-examples:
 
 You can tail logs for a particular service:
 
@@ -147,6 +143,7 @@ By default, logs will not be tailed, but you can do this with the --tail flag:
 ```shell
 dokku mariadb:logs lolipop --tail
 ```
+
 ### link the mariadb service to the app
 
 ```shell
@@ -154,9 +151,7 @@ dokku mariadb:logs lolipop --tail
 dokku mariadb:link <service> <app> [--link-flags...]
 ```
 
-examples:
-
-A mariadb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our 'playground' app. :
+A mariadb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our 'playground' app.
 
 > NOTE: this will restart your app
 
@@ -187,7 +182,7 @@ The host exposed here only works internally in docker containers. If you want yo
 dokku mariadb:link other_service playground
 ```
 
-It is possible to change the protocol for database_url by setting the environment variable database_database_scheme on the app. Doing so will after linking will cause the plugin to think the service is not linked, and we advise you to unlink before proceeding. :
+It is possible to change the protocol for database_url by setting the environment variable database_database_scheme on the app. Doing so will after linking will cause the plugin to think the service is not linked, and we advise you to unlink before proceeding.
 
 ```shell
 dokku config:set playground DATABASE_DATABASE_SCHEME=mysql2
@@ -199,6 +194,7 @@ This will cause database_url to be set as:
 ```
 mysql2://lolipop:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
 ```
+
 ### unlink the mariadb service from the app
 
 ```shell
@@ -206,28 +202,12 @@ mysql2://lolipop:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
 dokku mariadb:unlink <service> <app>
 ```
 
-examples:
-
 You can unlink a mariadb service:
 
 > NOTE: this will restart your app and unset related environment variables
 
 ```shell
 dokku mariadb:unlink lolipop playground
-```
-### delete the mariadb service/data/container if there are no links left
-
-```shell
-# usage
-dokku mariadb:destroy <service> [-f|--force]
-```
-
-examples:
-
-Destroy the service, it's data, and the running container:
-
-```shell
-dokku mariadb:destroy lolipop
 ```
 
 ### Service Lifecycle
@@ -241,13 +221,12 @@ The lifecycle of each service can be managed through the following commands:
 dokku mariadb:connect <service>
 ```
 
-examples:
-
 Connect to the service via the mariadb connection tool:
 
 ```shell
 dokku mariadb:connect lolipop
 ```
+
 ### enter or run a command in a running mariadb service container
 
 ```shell
@@ -255,19 +234,18 @@ dokku mariadb:connect lolipop
 dokku mariadb:enter <service>
 ```
 
-examples:
-
-A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk. :
+A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk.
 
 ```shell
 dokku mariadb:enter lolipop
 ```
 
-You may also run a command directly against the service. Filesystem changes will not be saved to disk. :
+You may also run a command directly against the service. Filesystem changes will not be saved to disk.
 
 ```shell
 dokku mariadb:enter lolipop touch /tmp/test
 ```
+
 ### expose a mariadb service on custom port if provided (random port otherwise)
 
 ```shell
@@ -275,13 +253,12 @@ dokku mariadb:enter lolipop touch /tmp/test
 dokku mariadb:expose <service> <ports...>
 ```
 
-examples:
-
 Expose the service on the service's normal ports, allowing access to it from the public interface (0. 0. 0. 0):
 
 ```shell
 dokku mariadb:expose lolipop ${PLUGIN_DATASTORE_PORTS[@]}
 ```
+
 ### unexpose a previously exposed mariadb service
 
 ```shell
@@ -289,21 +266,18 @@ dokku mariadb:expose lolipop ${PLUGIN_DATASTORE_PORTS[@]}
 dokku mariadb:unexpose <service>
 ```
 
-examples:
-
 Unexpose the service, removing access to it from the public interface (0. 0. 0. 0):
 
 ```shell
 dokku mariadb:unexpose lolipop
 ```
+
 ### promote service <service> as DATABASE_URL in <app>
 
 ```shell
 # usage
 dokku mariadb:promote <service> <app>
 ```
-
-examples:
 
 If you have a mariadb service linked to an app and try to link another mariadb service another link environment variable will be generated automatically:
 
@@ -326,20 +300,7 @@ DATABASE_URL=mysql://other_service:ANOTHER_PASSWORD@dokku-mariadb-other-service:
 DOKKU_DATABASE_BLUE_URL=mysql://other_service:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
 DOKKU_DATABASE_SILVER_URL=mysql://lolipop:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
 ```
-### graceful shutdown and restart of the mariadb service container
 
-```shell
-# usage
-dokku mariadb:restart <service>
-```
-
-examples:
-
-Restart the service:
-
-```shell
-dokku mariadb:restart lolipop
-```
 ### start a previously stopped mariadb service
 
 ```shell
@@ -347,13 +308,12 @@ dokku mariadb:restart lolipop
 dokku mariadb:start <service>
 ```
 
-examples:
-
 Start the service:
 
 ```shell
 dokku mariadb:start lolipop
 ```
+
 ### stop a running mariadb service
 
 ```shell
@@ -361,21 +321,31 @@ dokku mariadb:start lolipop
 dokku mariadb:stop <service>
 ```
 
-examples:
-
 Stop the service and the running container:
 
 ```shell
 dokku mariadb:stop lolipop
 ```
+
+### graceful shutdown and restart of the mariadb service container
+
+```shell
+# usage
+dokku mariadb:restart <service>
+```
+
+Restart the service:
+
+```shell
+dokku mariadb:restart lolipop
+```
+
 ### upgrade service <service> to the specified versions
 
 ```shell
 # usage
 dokku mariadb:upgrade <service> [--upgrade-flags...]
 ```
-
-examples:
 
 You can upgrade an existing service to a new image or image-version:
 
@@ -394,13 +364,12 @@ Service scripting can be executed using the following commands:
 dokku mariadb:app-links <app>
 ```
 
-examples:
-
-List all mariadb services that are linked to the 'playground' app. :
+List all mariadb services that are linked to the 'playground' app.
 
 ```shell
 dokku mariadb:app-links playground
 ```
+
 ### create container <new-name> then copy data from <name> into <new-name>
 
 ```shell
@@ -408,13 +377,12 @@ dokku mariadb:app-links playground
 dokku mariadb:clone <service> <new-service> [--clone-flags...]
 ```
 
-examples:
-
 You can clone an existing service to a new one:
 
 ```shell
 dokku mariadb:clone lolipop lolipop-2
 ```
+
 ### check if the mariadb service exists
 
 ```shell
@@ -422,13 +390,12 @@ dokku mariadb:clone lolipop lolipop-2
 dokku mariadb:exists <service>
 ```
 
-examples:
-
-Here we check if the lolipop mariadb service exists. :
+Here we check if the lolipop mariadb service exists.
 
 ```shell
 dokku mariadb:exists lolipop
 ```
+
 ### check if the mariadb service is linked to an app
 
 ```shell
@@ -436,13 +403,12 @@ dokku mariadb:exists lolipop
 dokku mariadb:linked <service> <app>
 ```
 
-examples:
-
-Here we check if the lolipop mariadb service is linked to the 'playground' app. :
+Here we check if the lolipop mariadb service is linked to the 'playground' app.
 
 ```shell
 dokku mariadb:linked lolipop playground
 ```
+
 ### list all apps linked to the mariadb service
 
 ```shell
@@ -450,9 +416,7 @@ dokku mariadb:linked lolipop playground
 dokku mariadb:links <service>
 ```
 
-examples:
-
-List all apps linked to the 'lolipop' mariadb service. :
+List all apps linked to the 'lolipop' mariadb service.
 
 ```shell
 dokku mariadb:links lolipop
@@ -469,21 +433,18 @@ The underlying service data can be imported and exported with the following comm
 dokku mariadb:import <service>
 ```
 
-examples:
-
 Import a datastore dump:
 
 ```shell
 dokku mariadb:import lolipop < database.dump
 ```
+
 ### export a dump of the mariadb service database
 
 ```shell
 # usage
 dokku mariadb:export <service>
 ```
-
-examples:
 
 By default, datastore output is exported to stdout:
 
@@ -512,8 +473,6 @@ Backups can be performed using the backup commands:
 dokku mariadb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url>
 ```
 
-examples:
-
 Setup s3 backup authentication:
 
 ```shell
@@ -537,6 +496,7 @@ More specific example for minio auth:
 ```shell
 dokku mariadb:backup-auth lolipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us-east-1 s3v4 https://YOURMINIOSERVICE
 ```
+
 ### removes backup authentication for the mariadb service
 
 ```shell
@@ -544,13 +504,12 @@ dokku mariadb:backup-auth lolipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us
 dokku mariadb:backup-deauth <service>
 ```
 
-examples:
-
 Remove s3 authentication:
 
 ```shell
 dokku mariadb:backup-deauth lolipop
 ```
+
 ### creates a backup of the mariadb service to an existing s3 bucket
 
 ```shell
@@ -558,13 +517,12 @@ dokku mariadb:backup-deauth lolipop
 dokku mariadb:backup <service> <bucket-name> [--use-iam]
 ```
 
-examples:
-
 Backup the 'lolipop' service to the 'my-s3-bucket' bucket on aws:
 
 ```shell
 dokku mariadb:backup lolipop my-s3-bucket --use-iam
 ```
+
 ### sets encryption for all future backups of mariadb service
 
 ```shell
@@ -572,13 +530,12 @@ dokku mariadb:backup lolipop my-s3-bucket --use-iam
 dokku mariadb:backup-set-encryption <service> <passphrase>
 ```
 
-examples:
-
 Set a gpg passphrase for backups:
 
 ```shell
 dokku mariadb:backup-set-encryption lolipop
 ```
+
 ### unsets encryption for future backups of the mariadb service
 
 ```shell
@@ -586,21 +543,18 @@ dokku mariadb:backup-set-encryption lolipop
 dokku mariadb:backup-unset-encryption <service>
 ```
 
-examples:
-
 Unset a gpg encryption key for backups:
 
 ```shell
 dokku mariadb:backup-unset-encryption lolipop
 ```
+
 ### schedules a backup of the mariadb service
 
 ```shell
 # usage
 dokku mariadb:backup-schedule <service> <schedule> <bucket-name> [--use-iam]
 ```
-
-examples:
 
 Schedule a backup:
 
@@ -615,6 +569,7 @@ Schedule a backup and authenticate via iam:
 ```shell
 dokku mariadb:backup-schedule lolipop "0 3 * * *" my-s3-bucket --use-iam
 ```
+
 ### cat the contents of the configured backup cronfile for the service
 
 ```shell
@@ -622,21 +577,18 @@ dokku mariadb:backup-schedule lolipop "0 3 * * *" my-s3-bucket --use-iam
 dokku mariadb:backup-schedule-cat <service>
 ```
 
-examples:
-
 Cat the contents of the configured backup cronfile for the service:
 
 ```shell
 dokku mariadb:backup-schedule-cat lolipop
 ```
+
 ### unschedules the backup of the mariadb service
 
 ```shell
 # usage
 dokku mariadb:backup-unschedule <service>
 ```
-
-examples:
 
 Remove the scheduled backup from cron:
 
