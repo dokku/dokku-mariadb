@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-export MARIADB_IMAGE=${MARIADB_IMAGE:="mariadb"}
-export MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="10.4.10"}
+_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export MARIADB_IMAGE=${MARIADB_IMAGE:="$(awk -F '[ :]' '{print $2}' "${_DIR}/Dockerfile")"}
+export MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="$(awk -F '[ :]' '{print $3}' "${_DIR}/Dockerfile")"}
 export MARIADB_ROOT=${MARIADB_ROOT:="$DOKKU_LIB_ROOT/services/mariadb"}
 export MARIADB_HOST_ROOT=${MARIADB_HOST_ROOT:=$MARIADB_ROOT}
 
