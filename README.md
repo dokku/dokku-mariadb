@@ -1,6 +1,6 @@
 # dokku mariadb [![Build Status](https://img.shields.io/circleci/project/github/dokku/dokku-mariadb.svg?branch=master&style=flat-square "Build Status")](https://circleci.com/gh/dokku/dokku-mariadb/tree/master) [![IRC Network](https://img.shields.io/badge/irc-freenode-blue.svg?style=flat-square "IRC Freenode")](https://webchat.freenode.net/?channels=dokku)
 
-Official mariadb plugin for dokku. Currently defaults to installing [mariadb 10.4.10](https://hub.docker.com/_/mariadb/).
+Official mariadb plugin for dokku. Currently defaults to installing [mariadb 10.5.11](https://hub.docker.com/_/mariadb/).
 
 ## Requirements
 
