@@ -77,7 +77,7 @@ Create a mariadb service named lolipop:
 dokku mariadb:create lolipop
 ```
 
-You can also specify the image and image version to use for the service. It *must* be compatible with the mariadb image. 
+You can also specify the image and image version to use for the service. It *must* be compatible with the mariadb image.
 
 ```shell
 export DATABASE_IMAGE="mariadb"
@@ -85,7 +85,7 @@ export DATABASE_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
 dokku mariadb:create lolipop
 ```
 
-You can also specify custom environment variables to start the mariadb service in semi-colon separated form. 
+You can also specify custom environment variables to start the mariadb service in semi-colon separated form.
 
 ```shell
 export DATABASE_CUSTOM_ENV="USER=alpha;HOST=beta"
@@ -181,7 +181,7 @@ flags:
 - `-a|--alias "BLUE_DATABASE"`: an alternative alias to use for linking to an app via environment variable
 - `-q|--querystring "pool=5"`: ampersand delimited querystring arguments to append to the service link
 
-A mariadb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our 'playground' app. 
+A mariadb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our `playground` app.
 
 > NOTE: this will restart your app
 
@@ -206,13 +206,13 @@ The following will be set on the linked application by default:
 DATABASE_URL=mysql://lolipop:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
 ```
 
-The host exposed here only works internally in docker containers. If you want your container to be reachable from outside, you should use the 'expose' subcommand. Another service can be linked to your app:
+The host exposed here only works internally in docker containers. If you want your container to be reachable from outside, you should use the `expose` subcommand. Another service can be linked to your app:
 
 ```shell
 dokku mariadb:link other_service playground
 ```
 
-It is possible to change the protocol for `DATABASE_URL` by setting the environment variable `MARIADB_DATABASE_SCHEME` on the app. Doing so will after linking will cause the plugin to think the service is not linked, and we advise you to unlink before proceeding. 
+It is possible to change the protocol for `DATABASE_URL` by setting the environment variable `MARIADB_DATABASE_SCHEME` on the app. Doing so will after linking will cause the plugin to think the service is not linked, and we advise you to unlink before proceeding.
 
 ```shell
 dokku config:set playground MARIADB_DATABASE_SCHEME=mysql2
@@ -264,13 +264,13 @@ dokku mariadb:connect lolipop
 dokku mariadb:enter <service>
 ```
 
-A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk. 
+A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk.
 
 ```shell
 dokku mariadb:enter lolipop
 ```
 
-You may also run a command directly against the service. Filesystem changes will not be saved to disk. 
+You may also run a command directly against the service. Filesystem changes will not be saved to disk.
 
 ```shell
 dokku mariadb:enter lolipop touch /tmp/test
@@ -401,7 +401,7 @@ Service scripting can be executed using the following commands:
 dokku mariadb:app-links <app>
 ```
 
-List all mariadb services that are linked to the 'playground' app. 
+List all mariadb services that are linked to the `playground` app.
 
 ```shell
 dokku mariadb:app-links playground
@@ -435,7 +435,7 @@ dokku mariadb:clone lolipop lolipop-2
 dokku mariadb:exists <service>
 ```
 
-Here we check if the lolipop mariadb service exists. 
+Here we check if the lolipop mariadb service exists.
 
 ```shell
 dokku mariadb:exists lolipop
@@ -448,7 +448,7 @@ dokku mariadb:exists lolipop
 dokku mariadb:linked <service> <app>
 ```
 
-Here we check if the lolipop mariadb service is linked to the 'playground' app. 
+Here we check if the lolipop mariadb service is linked to the `playground` app.
 
 ```shell
 dokku mariadb:linked lolipop playground
@@ -461,7 +461,7 @@ dokku mariadb:linked lolipop playground
 dokku mariadb:links <service>
 ```
 
-List all apps linked to the 'lolipop' mariadb service. 
+List all apps linked to the `lolipop` mariadb service.
 
 ```shell
 dokku mariadb:links lolipop
@@ -566,10 +566,16 @@ flags:
 
 - `-u|--use-iam`: use the IAM profile associated with the current server
 
-Backup the 'lolipop' service to the 'my-s3-bucket' bucket on ``AWS`:`
+Backup the `lolipop` service to the `my-s3-bucket` bucket on `AWS`:`
 
 ```shell
 dokku mariadb:backup lolipop my-s3-bucket --use-iam
+```
+
+Restore a backup file (assuming it was extracted via `tar -xf backup.tgz`):
+
+```shell
+dokku mariadb:import lolipop < backup-folder/export
 ```
 
 ### sets encryption for all future backups of mariadb service
