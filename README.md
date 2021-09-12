@@ -33,7 +33,7 @@ mariadb:destroy <service> [-f|--force]             # delete the mariadb service/
 mariadb:enter <service>                            # enter or run a command in a running mariadb service container
 mariadb:exists <service>                           # check if the mariadb service exists
 mariadb:export <service>                           # export a dump of the mariadb service database
-mariadb:expose <service> <ports...>                # expose a mariadb service on custom port if provided (random port otherwise)
+mariadb:expose <service> <ports...>                # expose a mariadb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
 mariadb:import <service>                           # import a dump into the mariadb service database
 mariadb:info <service> [--single-info-flag]        # print the service information
 mariadb:link <service> <app> [--link-flags...]     # link the mariadb service to the app
@@ -276,7 +276,7 @@ You may also run a command directly against the service. Filesystem changes will
 dokku mariadb:enter lolipop touch /tmp/test
 ```
 
-### expose a mariadb service on custom port if provided (random port otherwise)
+### expose a mariadb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
 
 ```shell
 # usage
@@ -287,6 +287,12 @@ Expose the service on the service's normal ports, allowing access to it from the
 
 ```shell
 dokku mariadb:expose lolipop 3306
+```
+
+Expose the service on the service's normal ports, with the first on a specified ip adddress (127.0.0.1):
+
+```shell
+dokku mariadb:expose lolipop 127.0.0.1:3306
 ```
 
 ### unexpose a previously exposed mariadb service
