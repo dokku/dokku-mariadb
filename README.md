@@ -74,10 +74,10 @@ flags:
 - `-r|--root-password PASSWORD`: override the root-level service password
 - `-s|--shm-size SHM_SIZE`: override shared memory size for mariadb docker container
 
-Create a mariadb service named lolipop:
+Create a mariadb service named lollipop:
 
 ```shell
-dokku mariadb:create lolipop
+dokku mariadb:create lollipop
 ```
 
 You can also specify the image and image version to use for the service. It *must* be compatible with the mariadb image.
@@ -85,14 +85,14 @@ You can also specify the image and image version to use for the service. It *mus
 ```shell
 export MARIADB_IMAGE="mariadb"
 export MARIADB_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
-dokku mariadb:create lolipop
+dokku mariadb:create lollipop
 ```
 
 You can also specify custom environment variables to start the mariadb service in semi-colon separated form.
 
 ```shell
 export MARIADB_CUSTOM_ENV="USER=alpha;HOST=beta"
-dokku mariadb:create lolipop
+dokku mariadb:create lollipop
 ```
 
 ### print the service information
@@ -118,22 +118,22 @@ flags:
 Get connection information as follows:
 
 ```shell
-dokku mariadb:info lolipop
+dokku mariadb:info lollipop
 ```
 
 You can also retrieve a specific piece of service info via flags:
 
 ```shell
-dokku mariadb:info lolipop --config-dir
-dokku mariadb:info lolipop --data-dir
-dokku mariadb:info lolipop --dsn
-dokku mariadb:info lolipop --exposed-ports
-dokku mariadb:info lolipop --id
-dokku mariadb:info lolipop --internal-ip
-dokku mariadb:info lolipop --links
-dokku mariadb:info lolipop --service-root
-dokku mariadb:info lolipop --status
-dokku mariadb:info lolipop --version
+dokku mariadb:info lollipop --config-dir
+dokku mariadb:info lollipop --data-dir
+dokku mariadb:info lollipop --dsn
+dokku mariadb:info lollipop --exposed-ports
+dokku mariadb:info lollipop --id
+dokku mariadb:info lollipop --internal-ip
+dokku mariadb:info lollipop --links
+dokku mariadb:info lollipop --service-root
+dokku mariadb:info lollipop --status
+dokku mariadb:info lollipop --version
 ```
 
 ### list all mariadb services
@@ -163,13 +163,13 @@ flags:
 You can tail logs for a particular service:
 
 ```shell
-dokku mariadb:logs lolipop
+dokku mariadb:logs lollipop
 ```
 
 By default, logs will not be tailed, but you can do this with the --tail flag:
 
 ```shell
-dokku mariadb:logs lolipop --tail
+dokku mariadb:logs lollipop --tail
 ```
 
 ### link the mariadb service to the app
@@ -189,24 +189,24 @@ A mariadb service can be linked to a container. This will use native docker link
 > NOTE: this will restart your app
 
 ```shell
-dokku mariadb:link lolipop playground
+dokku mariadb:link lollipop playground
 ```
 
 The following environment variables will be set automatically by docker (not on the app itself, so they won’t be listed when calling dokku config):
 
 ```
-DOKKU_MARIADB_LOLIPOP_NAME=/lolipop/DATABASE
-DOKKU_MARIADB_LOLIPOP_PORT=tcp://172.17.0.1:3306
-DOKKU_MARIADB_LOLIPOP_PORT_3306_TCP=tcp://172.17.0.1:3306
-DOKKU_MARIADB_LOLIPOP_PORT_3306_TCP_PROTO=tcp
-DOKKU_MARIADB_LOLIPOP_PORT_3306_TCP_PORT=3306
-DOKKU_MARIADB_LOLIPOP_PORT_3306_TCP_ADDR=172.17.0.1
+DOKKU_MARIADB_LOLLIPOP_NAME=/lollipop/DATABASE
+DOKKU_MARIADB_LOLLIPOP_PORT=tcp://172.17.0.1:3306
+DOKKU_MARIADB_LOLLIPOP_PORT_3306_TCP=tcp://172.17.0.1:3306
+DOKKU_MARIADB_LOLLIPOP_PORT_3306_TCP_PROTO=tcp
+DOKKU_MARIADB_LOLLIPOP_PORT_3306_TCP_PORT=3306
+DOKKU_MARIADB_LOLLIPOP_PORT_3306_TCP_ADDR=172.17.0.1
 ```
 
 The following will be set on the linked application by default:
 
 ```
-DATABASE_URL=mysql://mariadb:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
+DATABASE_URL=mysql://mariadb:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
 ```
 
 The host exposed here only works internally in docker containers. If you want your container to be reachable from outside, you should use the `expose` subcommand. Another service can be linked to your app:
@@ -219,13 +219,13 @@ It is possible to change the protocol for `DATABASE_URL` by setting the environm
 
 ```shell
 dokku config:set playground MARIADB_DATABASE_SCHEME=mysql2
-dokku mariadb:link lolipop playground
+dokku mariadb:link lollipop playground
 ```
 
 This will cause `DATABASE_URL` to be set as:
 
 ```
-mysql2://mariadb:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
+mysql2://mariadb:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
 ```
 
 ### unlink the mariadb service from the app
@@ -240,7 +240,7 @@ You can unlink a mariadb service:
 > NOTE: this will restart your app and unset related environment variables
 
 ```shell
-dokku mariadb:unlink lolipop playground
+dokku mariadb:unlink lollipop playground
 ```
 
 ### Service Lifecycle
@@ -257,7 +257,7 @@ dokku mariadb:connect <service>
 Connect to the service via the mariadb connection tool:
 
 ```shell
-dokku mariadb:connect lolipop
+dokku mariadb:connect lollipop
 ```
 
 ### enter or run a command in a running mariadb service container
@@ -270,13 +270,13 @@ dokku mariadb:enter <service>
 A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk.
 
 ```shell
-dokku mariadb:enter lolipop
+dokku mariadb:enter lollipop
 ```
 
 You may also run a command directly against the service. Filesystem changes will not be saved to disk.
 
 ```shell
-dokku mariadb:enter lolipop touch /tmp/test
+dokku mariadb:enter lollipop touch /tmp/test
 ```
 
 ### expose a mariadb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
@@ -289,13 +289,13 @@ dokku mariadb:expose <service> <ports...>
 Expose the service on the service's normal ports, allowing access to it from the public interface (`0.0.0.0`):
 
 ```shell
-dokku mariadb:expose lolipop 3306
+dokku mariadb:expose lollipop 3306
 ```
 
 Expose the service on the service's normal ports, with the first on a specified ip adddress (127.0.0.1):
 
 ```shell
-dokku mariadb:expose lolipop 127.0.0.1:3306
+dokku mariadb:expose lollipop 127.0.0.1:3306
 ```
 
 ### unexpose a previously exposed mariadb service
@@ -308,7 +308,7 @@ dokku mariadb:unexpose <service>
 Unexpose the service, removing access to it from the public interface (`0.0.0.0`):
 
 ```shell
-dokku mariadb:unexpose lolipop
+dokku mariadb:unexpose lollipop
 ```
 
 ### promote service <service> as DATABASE_URL in <app>
@@ -337,7 +337,7 @@ This will replace `DATABASE_URL` with the url from other_service and generate an
 ```
 DATABASE_URL=mysql://other_service:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
 DOKKU_DATABASE_BLUE_URL=mysql://other_service:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
-DOKKU_DATABASE_SILVER_URL=mysql://lolipop:SOME_PASSWORD@dokku-mariadb-lolipop:3306/lolipop
+DOKKU_DATABASE_SILVER_URL=mysql://lollipop:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
 ```
 
 ### start a previously stopped mariadb service
@@ -350,7 +350,7 @@ dokku mariadb:start <service>
 Start the service:
 
 ```shell
-dokku mariadb:start lolipop
+dokku mariadb:start lollipop
 ```
 
 ### stop a running mariadb service
@@ -363,7 +363,7 @@ dokku mariadb:stop <service>
 Stop the service and the running container:
 
 ```shell
-dokku mariadb:stop lolipop
+dokku mariadb:stop lollipop
 ```
 
 ### graceful shutdown and restart of the mariadb service container
@@ -376,7 +376,7 @@ dokku mariadb:restart <service>
 Restart the service:
 
 ```shell
-dokku mariadb:restart lolipop
+dokku mariadb:restart lollipop
 ```
 
 ### upgrade service <service> to the specified versions
@@ -398,7 +398,7 @@ flags:
 You can upgrade an existing service to a new image or image-version:
 
 ```shell
-dokku mariadb:upgrade lolipop
+dokku mariadb:upgrade lollipop
 ```
 
 ### Service Automation
@@ -439,7 +439,7 @@ flags:
 You can clone an existing service to a new one:
 
 ```shell
-dokku mariadb:clone lolipop lolipop-2
+dokku mariadb:clone lollipop lollipop-2
 ```
 
 ### check if the mariadb service exists
@@ -449,10 +449,10 @@ dokku mariadb:clone lolipop lolipop-2
 dokku mariadb:exists <service>
 ```
 
-Here we check if the lolipop mariadb service exists.
+Here we check if the lollipop mariadb service exists.
 
 ```shell
-dokku mariadb:exists lolipop
+dokku mariadb:exists lollipop
 ```
 
 ### check if the mariadb service is linked to an app
@@ -462,10 +462,10 @@ dokku mariadb:exists lolipop
 dokku mariadb:linked <service> <app>
 ```
 
-Here we check if the lolipop mariadb service is linked to the `playground` app.
+Here we check if the lollipop mariadb service is linked to the `playground` app.
 
 ```shell
-dokku mariadb:linked lolipop playground
+dokku mariadb:linked lollipop playground
 ```
 
 ### list all apps linked to the mariadb service
@@ -475,10 +475,10 @@ dokku mariadb:linked lolipop playground
 dokku mariadb:links <service>
 ```
 
-List all apps linked to the `lolipop` mariadb service.
+List all apps linked to the `lollipop` mariadb service.
 
 ```shell
-dokku mariadb:links lolipop
+dokku mariadb:links lollipop
 ```
 
 ### Data Management
@@ -495,7 +495,7 @@ dokku mariadb:import <service>
 Import a datastore dump:
 
 ```shell
-dokku mariadb:import lolipop < database.dump
+dokku mariadb:import lollipop < database.dump
 ```
 
 ### export a dump of the mariadb service database
@@ -508,13 +508,13 @@ dokku mariadb:export <service>
 By default, datastore output is exported to stdout:
 
 ```shell
-dokku mariadb:export lolipop
+dokku mariadb:export lollipop
 ```
 
 You can redirect this output to a file:
 
 ```shell
-dokku mariadb:export lolipop > lolipop.dump
+dokku mariadb:export lollipop > lollipop.dump
 ```
 
 ### Backups
@@ -535,25 +535,25 @@ dokku mariadb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> 
 Setup s3 backup authentication:
 
 ```shell
-dokku mariadb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+dokku mariadb:backup-auth lollipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 ```
 
 Setup s3 backup authentication with different region:
 
 ```shell
-dokku mariadb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION
+dokku mariadb:backup-auth lollipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION
 ```
 
 Setup s3 backup authentication with different signature version and endpoint:
 
 ```shell
-dokku mariadb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION AWS_SIGNATURE_VERSION ENDPOINT_URL
+dokku mariadb:backup-auth lollipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION AWS_SIGNATURE_VERSION ENDPOINT_URL
 ```
 
 More specific example for minio auth:
 
 ```shell
-dokku mariadb:backup-auth lolipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us-east-1 s3v4 https://YOURMINIOSERVICE
+dokku mariadb:backup-auth lollipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us-east-1 s3v4 https://YOURMINIOSERVICE
 ```
 
 ### remove backup authentication for the mariadb service
@@ -566,7 +566,7 @@ dokku mariadb:backup-deauth <service>
 Remove s3 authentication:
 
 ```shell
-dokku mariadb:backup-deauth lolipop
+dokku mariadb:backup-deauth lollipop
 ```
 
 ### create a backup of the mariadb service to an existing s3 bucket
@@ -580,16 +580,16 @@ flags:
 
 - `-u|--use-iam`: use the IAM profile associated with the current server
 
-Backup the `lolipop` service to the `my-s3-bucket` bucket on `AWS`:`
+Backup the `lollipop` service to the `my-s3-bucket` bucket on `AWS`:`
 
 ```shell
-dokku mariadb:backup lolipop my-s3-bucket --use-iam
+dokku mariadb:backup lollipop my-s3-bucket --use-iam
 ```
 
 Restore a backup file (assuming it was extracted via `tar -xf backup.tgz`):
 
 ```shell
-dokku mariadb:import lolipop < backup-folder/export
+dokku mariadb:import lollipop < backup-folder/export
 ```
 
 ### set encryption for all future backups of mariadb service
@@ -602,7 +602,7 @@ dokku mariadb:backup-set-encryption <service> <passphrase>
 Set the GPG-compatible passphrase for encrypting backups for backups:
 
 ```shell
-dokku mariadb:backup-set-encryption lolipop
+dokku mariadb:backup-set-encryption lollipop
 ```
 
 ### unset encryption for future backups of the mariadb service
@@ -615,7 +615,7 @@ dokku mariadb:backup-unset-encryption <service>
 Unset the `GPG` encryption passphrase for backups:
 
 ```shell
-dokku mariadb:backup-unset-encryption lolipop
+dokku mariadb:backup-unset-encryption lollipop
 ```
 
 ### schedule a backup of the mariadb service
@@ -634,13 +634,13 @@ Schedule a backup:
 > 'schedule' is a crontab expression, eg. "0 3 * * *" for each day at 3am
 
 ```shell
-dokku mariadb:backup-schedule lolipop "0 3 * * *" my-s3-bucket
+dokku mariadb:backup-schedule lollipop "0 3 * * *" my-s3-bucket
 ```
 
 Schedule a backup and authenticate via iam:
 
 ```shell
-dokku mariadb:backup-schedule lolipop "0 3 * * *" my-s3-bucket --use-iam
+dokku mariadb:backup-schedule lollipop "0 3 * * *" my-s3-bucket --use-iam
 ```
 
 ### cat the contents of the configured backup cronfile for the service
@@ -653,7 +653,7 @@ dokku mariadb:backup-schedule-cat <service>
 Cat the contents of the configured backup cronfile for the service:
 
 ```shell
-dokku mariadb:backup-schedule-cat lolipop
+dokku mariadb:backup-schedule-cat lollipop
 ```
 
 ### unschedule the backup of the mariadb service
@@ -666,7 +666,7 @@ dokku mariadb:backup-unschedule <service>
 Remove the scheduled backup from cron:
 
 ```shell
-dokku mariadb:backup-unschedule lolipop
+dokku mariadb:backup-unschedule lollipop
 ```
 
 ### Disabling `docker pull` calls
