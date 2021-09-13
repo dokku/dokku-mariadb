@@ -18,14 +18,14 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 
 ```
 mariadb:app-links <app>                            # list all mariadb service links for a given app
-mariadb:backup <service> <bucket-name> [--use-iam] # creates a backup of the mariadb service to an existing s3 bucket
-mariadb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url> # sets up authentication for backups on the mariadb service
-mariadb:backup-deauth <service>                    # removes backup authentication for the mariadb service
-mariadb:backup-schedule <service> <schedule> <bucket-name> [--use-iam] # schedules a backup of the mariadb service
+mariadb:backup <service> <bucket-name> [--use-iam] # create a backup of the mariadb service to an existing s3 bucket
+mariadb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url> # set up authentication for backups on the mariadb service
+mariadb:backup-deauth <service>                    # remove backup authentication for the mariadb service
+mariadb:backup-schedule <service> <schedule> <bucket-name> [--use-iam] # schedule a backup of the mariadb service
 mariadb:backup-schedule-cat <service>              # cat the contents of the configured backup cronfile for the service
-mariadb:backup-set-encryption <service> <passphrase> # sets encryption for all future backups of mariadb service
-mariadb:backup-unschedule <service>                # unschedules the backup of the mariadb service
-mariadb:backup-unset-encryption <service>          # unsets encryption for future backups of the mariadb service
+mariadb:backup-set-encryption <service> <passphrase> # set encryption for all future backups of mariadb service
+mariadb:backup-unschedule <service>                # unschedule the backup of the mariadb service
+mariadb:backup-unset-encryption <service>          # unset encryption for future backups of the mariadb service
 mariadb:clone <service> <new-service> [--clone-flags...] # create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <service>                          # connect to the service via the mariadb connection tool
 mariadb:create <service> [--create-flags...]       # create a mariadb service
@@ -82,15 +82,15 @@ dokku mariadb:create lolipop
 You can also specify the image and image version to use for the service. It *must* be compatible with the mariadb image.
 
 ```shell
-export DATABASE_IMAGE="mariadb"
-export DATABASE_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
+export MARIADB_IMAGE="mariadb"
+export MARIADB_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
 dokku mariadb:create lolipop
 ```
 
 You can also specify custom environment variables to start the mariadb service in semi-colon separated form.
 
 ```shell
-export DATABASE_CUSTOM_ENV="USER=alpha;HOST=beta"
+export MARIADB_CUSTOM_ENV="USER=alpha;HOST=beta"
 dokku mariadb:create lolipop
 ```
 
@@ -522,7 +522,7 @@ You may skip the `backup-auth` step if your dokku install is running within EC2 
 
 Backups can be performed using the backup commands:
 
-### sets up authentication for backups on the mariadb service
+### set up authentication for backups on the mariadb service
 
 ```shell
 # usage
@@ -553,7 +553,7 @@ More specific example for minio auth:
 dokku mariadb:backup-auth lolipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us-east-1 s3v4 https://YOURMINIOSERVICE
 ```
 
-### removes backup authentication for the mariadb service
+### remove backup authentication for the mariadb service
 
 ```shell
 # usage
@@ -566,7 +566,7 @@ Remove s3 authentication:
 dokku mariadb:backup-deauth lolipop
 ```
 
-### creates a backup of the mariadb service to an existing s3 bucket
+### create a backup of the mariadb service to an existing s3 bucket
 
 ```shell
 # usage
@@ -589,7 +589,7 @@ Restore a backup file (assuming it was extracted via `tar -xf backup.tgz`):
 dokku mariadb:import lolipop < backup-folder/export
 ```
 
-### sets encryption for all future backups of mariadb service
+### set encryption for all future backups of mariadb service
 
 ```shell
 # usage
@@ -602,7 +602,7 @@ Set the GPG-compatible passphrase for encrypting backups for backups:
 dokku mariadb:backup-set-encryption lolipop
 ```
 
-### unsets encryption for future backups of the mariadb service
+### unset encryption for future backups of the mariadb service
 
 ```shell
 # usage
@@ -615,7 +615,7 @@ Unset the `GPG` encryption passphrase for backups:
 dokku mariadb:backup-unset-encryption lolipop
 ```
 
-### schedules a backup of the mariadb service
+### schedule a backup of the mariadb service
 
 ```shell
 # usage
@@ -653,7 +653,7 @@ Cat the contents of the configured backup cronfile for the service:
 dokku mariadb:backup-schedule-cat lolipop
 ```
 
-### unschedules the backup of the mariadb service
+### unschedule the backup of the mariadb service
 
 ```shell
 # usage
