@@ -499,7 +499,7 @@ dokku mariadb:import <service>
 Import a datastore dump:
 
 ```shell
-dokku mariadb:import lollipop < database.dump
+dokku mariadb:import lollipop < data.dump
 ```
 
 ### export a dump of the mariadb service database
@@ -518,7 +518,7 @@ dokku mariadb:export lollipop
 You can redirect this output to a file:
 
 ```shell
-dokku mariadb:export lollipop > lollipop.dump
+dokku mariadb:export lollipop > data.dump
 ```
 
 ### Backups
