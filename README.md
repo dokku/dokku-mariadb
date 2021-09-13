@@ -256,6 +256,8 @@ dokku mariadb:connect <service>
 
 Connect to the service via the mariadb connection tool:
 
+> NOTE: disconnecting from ssh while running this command may leave zombie processes due to moby/moby#9098
+
 ```shell
 dokku mariadb:connect lollipop
 ```
@@ -268,6 +270,8 @@ dokku mariadb:enter <service>
 ```
 
 A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk.
+
+> NOTE: disconnecting from ssh while running this command may leave zombie processes due to moby/moby#9098
 
 ```shell
 dokku mariadb:enter lollipop
