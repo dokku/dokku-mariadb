@@ -40,7 +40,7 @@ mariadb:link <service> <app> [--link-flags...]     # link the mariadb service to
 mariadb:linked <service> <app>                     # check if the mariadb service is linked to an app
 mariadb:links <service>                            # list all apps linked to the mariadb service
 mariadb:list                                       # list all mariadb services
-mariadb:logs <service> [-t|--tail]                 # print the most recent log(s) for this service
+mariadb:logs <service> [-t|--tail] <tail-num-optional> # print the most recent log(s) for this service
 mariadb:promote <service> <app>                    # promote service <service> as DATABASE_URL in <app>
 mariadb:restart <service>                          # graceful shutdown and restart of the mariadb service container
 mariadb:start <service>                            # start a previously stopped mariadb service
@@ -153,12 +153,12 @@ dokku mariadb:list
 
 ```shell
 # usage
-dokku mariadb:logs <service> [-t|--tail]
+dokku mariadb:logs <service> [-t|--tail] <tail-num-optional>
 ```
 
 flags:
 
-- `-t|--tail`: do not stop when end of the logs are reached and wait for additional output
+- `-t|--tail [<tail-num>]`: do not stop when end of the logs are reached and wait for additional output
 
 You can tail logs for a particular service:
 
@@ -170,6 +170,12 @@ By default, logs will not be tailed, but you can do this with the --tail flag:
 
 ```shell
 dokku mariadb:logs lollipop --tail
+```
+
+The default tail setting is to show all logs, but an initial count can also be specified:
+
+```shell
+dokku mariadb:logs lollipop --tail 5
 ```
 
 ### link the mariadb service to the app
