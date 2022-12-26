@@ -41,6 +41,7 @@ mariadb:linked <service> <app>                     # check if the mariadb servic
 mariadb:links <service>                            # list all apps linked to the mariadb service
 mariadb:list                                       # list all mariadb services
 mariadb:logs <service> [-t|--tail] <tail-num-optional> # print the most recent log(s) for this service
+mariadb:pause <service>                            # pause a running mariadb service
 mariadb:promote <service> <app>                    # promote service <service> as DATABASE_URL in <app>
 mariadb:restart <service>                          # graceful shutdown and restart of the mariadb service container
 mariadb:start <service>                            # start a previously stopped mariadb service
@@ -370,10 +371,23 @@ dokku mariadb:start lollipop
 dokku mariadb:stop <service>
 ```
 
-Stop the service and the running container:
+Stop the service and removes the running container:
 
 ```shell
 dokku mariadb:stop lollipop
+```
+
+### pause a running mariadb service
+
+```shell
+# usage
+dokku mariadb:pause <service>
+```
+
+Pause the running container for the service:
+
+```shell
+dokku mariadb:pause lollipop
 ```
 
 ### graceful shutdown and restart of the mariadb service container
