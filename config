@@ -3,7 +3,8 @@ _DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export MARIADB_IMAGE=${MARIADB_IMAGE:="$(awk -F '[ :]' '{print $2}' "${_DIR}/Dockerfile")"}
 export MARIADB_IMAGE_VERSION=${MARIADB_IMAGE_VERSION:="$(awk -F '[ :]' '{print $3}' "${_DIR}/Dockerfile")"}
 export MARIADB_ROOT=${MARIADB_ROOT:="$DOKKU_LIB_ROOT/services/mariadb"}
-export MARIADB_HOST_ROOT=${MARIADB_HOST_ROOT:=$MARIADB_ROOT}
+export DOKKU_LIB_HOST_ROOT=${DOKKU_LIB_HOST_ROOT:=$DOKKU_LIB_ROOT}
+export MARIADB_HOST_ROOT=${MARIADB_HOST_ROOT:="$DOKKU_LIB_HOST_ROOT/services/mariadb"}
 
 export PLUGIN_UNIMPLEMENTED_SUBCOMMANDS=()
 export PLUGIN_COMMAND_PREFIX="mariadb"
