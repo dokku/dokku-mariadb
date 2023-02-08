@@ -44,6 +44,7 @@ mariadb:logs <service> [-t|--tail] <tail-num-optional> # print the most recent l
 mariadb:pause <service>                            # pause a running mariadb service
 mariadb:promote <service> <app>                    # promote service <service> as DATABASE_URL in <app>
 mariadb:restart <service>                          # graceful shutdown and restart of the mariadb service container
+mariadb:set <service> <key> <value>                # set or clear a property for a service
 mariadb:start <service>                            # start a previously stopped mariadb service
 mariadb:stop <service>                             # stop a running mariadb service
 mariadb:unexpose <service>                         # unexpose a previously exposed mariadb service
@@ -111,7 +112,10 @@ flags:
 - `--exposed-ports`: show service exposed ports
 - `--id`: show the service container id
 - `--internal-ip`: show the service internal ip
+- `--initial-network`: show the initial network being connected to
 - `--links`: show the service app links
+- `--post-create-network`: show the networks to attach to after service container creation
+- `--post-start-network`: show the networks to attach to after service container start
 - `--service-root`: show the service root directory
 - `--status`: show the service running status
 - `--version`: show the service image version
@@ -131,7 +135,10 @@ dokku mariadb:info lollipop --dsn
 dokku mariadb:info lollipop --exposed-ports
 dokku mariadb:info lollipop --id
 dokku mariadb:info lollipop --internal-ip
+dokku mariadb:info lollipop --initial-network
 dokku mariadb:info lollipop --links
+dokku mariadb:info lollipop --post-create-network
+dokku mariadb:info lollipop --post-start-network
 dokku mariadb:info lollipop --service-root
 dokku mariadb:info lollipop --status
 dokku mariadb:info lollipop --version
@@ -248,6 +255,31 @@ You can unlink a mariadb service:
 
 ```shell
 dokku mariadb:unlink lollipop playground
+```
+
+### set or clear a property for a service
+
+```shell
+# usage
+dokku mariadb:set <service> <key> <value>
+```
+
+Set the network to attach after the service container is started:
+
+```shell
+dokku mariadb:set lollipop post-create-network custom-network
+```
+
+Set multiple networks:
+
+```shell
+dokku mariadb:set lollipop post-create-network custom-network,other-network
+```
+
+Unset the post-create-network value:
+
+```shell
+dokku mariadb:set lollipop post-create-network
 ```
 
 ### Service Lifecycle
