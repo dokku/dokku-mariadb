@@ -93,7 +93,7 @@ service_create_container() {
   DOCKER_ARGS+=("--env=MYSQL_PASSWORD=$PASSWORD")
   DOCKER_ARGS+=("--env=MYSQL_ROOT_PASSWORD=$ROOTPASSWORD")
   DOCKER_ARGS+=("--env=MYSQL_USER=mariadb")
-  DOCKER_ARGS+=("--hostname=$SERVICE")
+  DOCKER_ARGS+=("--hostname=$SERVICE_NAME")
   DOCKER_ARGS+=("--label=dokku.service=$PLUGIN_COMMAND_PREFIX")
   DOCKER_ARGS+=("--label=dokku=service")
   DOCKER_ARGS+=("--name=$SERVICE_NAME")
