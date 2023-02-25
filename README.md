@@ -224,7 +224,7 @@ DOKKU_MARIADB_LOLLIPOP_PORT_3306_TCP_ADDR=172.17.0.1
 The following will be set on the linked application by default:
 
 ```
-DATABASE_URL=mysql://lollipop:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
+DATABASE_URL=mysql://mariadb:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
 ```
 
 The host exposed here only works internally in docker containers. If you want your container to be reachable from outside, you should use the `expose` subcommand. Another service can be linked to your app:
@@ -243,13 +243,7 @@ dokku mariadb:link lollipop playground
 This will cause `DATABASE_URL` to be set as:
 
 ```
-mysql2://lollipop:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
-```
-
-If you specify `MARIADB_DATABASE_SCHEME` to equal `http`, we`ll also automatically adjust `DATABASE_URL` to match the http interface:
-
-```
-http://lollipop:SOME_PASSWORD@dokku-mariadb-lollipop:${PLUGIN_DATASTORE_PORTS[1]}
+mysql2://mariadb:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
 ```
 
 ### unlink the mariadb service from the app
