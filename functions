@@ -19,7 +19,7 @@ service_connect() {
   local SERVICE_TTY_OPTS
   has_tty && SERVICE_TTY_OPTS="-t"
 
-  "$DOCKER_BIN" container exec --env=LANG=C.UTF-8 --env=LC_ALL=C.UTF-8 -i $SERVICE_TTY_OPTS "$SERVICE_NAME" env TERM="$TERM" mysql --user=mariadb --password="$PASSWORD" --database="$DATABASE_NAME"
+  "$DOCKER_BIN" container exec --env=LANG=C.UTF-8 --env=LC_ALL=C.UTF-8 -i $SERVICE_TTY_OPTS "$SERVICE_NAME" env TERM="$TERM" mariadb --user=mariadb --password="$PASSWORD" --database="$DATABASE_NAME"
 }
 
 service_create() {
@@ -170,7 +170,7 @@ service_export() {
   local PASSWORD="$(service_password "$SERVICE")"
 
   [[ -n $SSH_TTY ]] && stty -opost
-  "$DOCKER_BIN" container exec "$SERVICE_NAME" mysqldump --user=mariadb --password="$PASSWORD" "$DATABASE_NAME"
+  "$DOCKER_BIN" container exec "$SERVICE_NAME" mariadb-dump --user=mariadb --password="$PASSWORD" "$DATABASE_NAME"
   status=$?
   [[ -n $SSH_TTY ]] && stty opost
   exit $status
@@ -187,7 +187,7 @@ service_import() {
   if [[ -t 0 ]]; then
     dokku_log_fail "No data provided on stdin."
   fi
-  "$DOCKER_BIN" container exec -i "$SERVICE_NAME" mysql --user=mariadb --password="$PASSWORD" "$DATABASE_NAME"
+  "$DOCKER_BIN" container exec -i "$SERVICE_NAME" mariadb --user=mariadb --password="$PASSWORD" "$DATABASE_NAME"
 }
 
 service_start() {
