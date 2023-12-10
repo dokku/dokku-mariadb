@@ -18,8 +18,7 @@ service_connect() {
   local PASSWORD="$(service_password "$SERVICE")"
   local SERVICE_TTY_OPTS
   has_tty && SERVICE_TTY_OPTS="-t"
-
-  "$DOCKER_BIN" container exec --env=LANG=C.UTF-8 --env=LC_ALL=C.UTF-8 -i $SERVICE_TTY_OPTS "$SERVICE_NAME" env TERM="$TERM" mariadb --user=mariadb --password="$PASSWORD" --database="$DATABASE_NAME"
+  "$DOCKER_BIN" container exec --env=LANG=C.UTF-8 --env=LC_ALL=C.UTF-8 -i $SERVICE_TTY_OPTS "$SERVICE_NAME" env TERM="$TERM" bash -c "type mariadb >/dev/null 2>&1 && mariadb --user=mariadb --password='$PASSWORD' --database='$DATABASE_NAME' || mysql --user=mariadb --password='$PASSWORD' --database='$DATABASE_NAME'"
 }
 
 service_create() {
@@ -170,7 +169,7 @@ service_export() {
   local PASSWORD="$(service_password "$SERVICE")"
 
   [[ -n $SSH_TTY ]] && stty -opost
-  "$DOCKER_BIN" container exec "$SERVICE_NAME" mariadb-dump --user=mariadb --password="$PASSWORD" "$DATABASE_NAME"
+  "$DOCKER_BIN" container exec "$SERVICE_NAME" bash -c "type mariadb-dump >/dev/null 2>&1 && mariadb-dump --user=mariadb --password='$PASSWORD' '$DATABASE_NAME' || mysqldump  --user=mariadb --password='$PASSWORD' '$DATABASE_NAME'"
   status=$?
   [[ -n $SSH_TTY ]] && stty opost
   exit $status
