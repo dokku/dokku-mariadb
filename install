@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/config"
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common-functions"
+source "$PLUGIN_CORE_AVAILABLE_PATH/common/property-functions"
 set -eo pipefail
 [[ $DOKKU_TRACE ]] && set -x
 
@@ -9,14 +10,15 @@ plugin-install() {
     declare IMAGE="$1"
     if [[ "$PLUGIN_DISABLE_PULL" == "true" ]]; then
       echo " !     ${PLUGIN_DISABLE_PULL_VARIABLE} environment variable detected. Not running pull command." 1>&2
-      echo " !        docker pull ${IMAGE}" 1>&2
+      echo " !        docker image pull ${IMAGE}" 1>&2
       return
     fi
-    if [[ "$(docker images -q "${IMAGE}" 2>/dev/null)" == "" ]]; then
-      docker pull "${IMAGE}"
+    if [[ "$("$DOCKER_BIN" image ls -q "${IMAGE}" 2>/dev/null)" == "" ]]; then
+      "$DOCKER_BIN" image pull "${IMAGE}"
     fi
   }
 
+  fn-plugin-property-setup "$PLUGIN_COMMAND_PREFIX"
   pull-docker-image "${PLUGIN_IMAGE}:${PLUGIN_IMAGE_VERSION}"
   pull-docker-image "$PLUGIN_BUSYBOX_IMAGE"
   pull-docker-image "$PLUGIN_AMBASSADOR_IMAGE"
@@ -24,10 +26,10 @@ plugin-install() {
   pull-docker-image "$PLUGIN_WAIT_IMAGE"
 
   mkdir -p "$PLUGIN_DATA_ROOT" || echo "Failed to create $PLUGIN_SERVICE data directory"
-  chown dokku:dokku "$PLUGIN_DATA_ROOT"
+  chown "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" "$PLUGIN_DATA_ROOT"
 
   mkdir -p "$PLUGIN_CONFIG_ROOT" || echo "Failed to create $PLUGIN_SERVICE config directory"
-  chown dokku:dokku "$PLUGIN_CONFIG_ROOT"
+  chown "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" "$PLUGIN_CONFIG_ROOT"
 
   rm -f "/etc/sudoers.d/dokku-${PLUGIN_COMMAND_PREFIX}*"
   _SUDOERS_FILE="/etc/sudoers.d/dokku-${PLUGIN_COMMAND_PREFIX}"
@@ -44,20 +46,22 @@ EOL
 
   chmod 0440 "$_SUDOERS_FILE"
 
-  local SERVICES=$(ls "$PLUGIN_DATA_ROOT" 2>/dev/null)
-  for SERVICE in $SERVICES; do
+  for SERVICE in $(fn-services-list false); do
     local SERVICE_ROOT="$PLUGIN_DATA_ROOT/$SERVICE"
 
     if [[ ! -f "$SERVICE_ROOT/IMAGE" ]] || [[ ! -f "$SERVICE_ROOT/IMAGE_VERSION" ]]; then
       local image="$(service_version "$SERVICE")"
       if [[ "$image" == *":"* ]]; then
-        echo "${image%:*}" > "$SERVICE_ROOT/IMAGE"
-        echo "${image##*:}" > "$SERVICE_ROOT/IMAGE_VERSION"
+        echo "${image%:*}" >"$SERVICE_ROOT/IMAGE"
+        echo "${image##*:}" >"$SERVICE_ROOT/IMAGE_VERSION"
       fi
     fi
 
+    chown "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" "$SERVICE_ROOT/IMAGE" "$SERVICE_ROOT/IMAGE_VERSION"
+
     if [[ -f "$SERVICE_ROOT/${PLUGIN_VARIABLE}_CONFIG_OPTIONS" ]]; then
       mv "$SERVICE_ROOT/${PLUGIN_VARIABLE}_CONFIG_OPTIONS" "$SERVICE_ROOT/CONFIG_OPTIONS"
+      chown "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" "$SERVICE_ROOT/CONFIG_OPTIONS"
     fi
   done
 }

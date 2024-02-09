@@ -1,6 +1,6 @@
-# dokku mariadb [![Build Status](https://img.shields.io/github/workflow/status/dokku/dokku-mariadb/CI/master?style=flat-square "Build Status")](https://github.com/dokku/dokku-mariadb/actions/workflows/ci.yml?query=branch%3Amaster) [![IRC Network](https://img.shields.io/badge/irc-libera-blue.svg?style=flat-square "IRC Libera")](https://webchat.libera.chat/?channels=dokku)
+# dokku mariadb [![Build Status](https://img.shields.io/github/actions/workflow/status/dokku/dokku-mariadb/ci.yml?branch=master&style=flat-square "Build Status")](https://github.com/dokku/dokku-mariadb/actions/workflows/ci.yml?query=branch%3Amaster) [![IRC Network](https://img.shields.io/badge/irc-libera-blue.svg?style=flat-square "IRC Libera")](https://webchat.libera.chat/?channels=dokku)
 
-Official mariadb plugin for dokku. Currently defaults to installing [mariadb 10.6.5](https://hub.docker.com/_/mariadb/).
+Official mariadb plugin for dokku. Currently defaults to installing [mariadb 11.2.2](https://hub.docker.com/_/mariadb/).
 
 ## Requirements
 
@@ -41,8 +41,10 @@ mariadb:linked <service> <app>                     # check if the mariadb servic
 mariadb:links <service>                            # list all apps linked to the mariadb service
 mariadb:list                                       # list all mariadb services
 mariadb:logs <service> [-t|--tail] <tail-num-optional> # print the most recent log(s) for this service
+mariadb:pause <service>                            # pause a running mariadb service
 mariadb:promote <service> <app>                    # promote service <service> as DATABASE_URL in <app>
 mariadb:restart <service>                          # graceful shutdown and restart of the mariadb service container
+mariadb:set <service> <key> <value>                # set or clear a property for a service
 mariadb:start <service>                            # start a previously stopped mariadb service
 mariadb:stop <service>                             # stop a running mariadb service
 mariadb:unexpose <service>                         # unexpose a previously exposed mariadb service
@@ -69,9 +71,12 @@ flags:
 - `-C|--custom-env "USER=alpha;HOST=beta"`: semi-colon delimited environment variables to start the service with
 - `-i|--image IMAGE`: the image name to start the service with
 - `-I|--image-version IMAGE_VERSION`: the image version to start the service with
-- `-m|--memory MEMORY`: container memory limit (default: unlimited)
+- `-m|--memory MEMORY`: container memory limit in megabytes (default: unlimited)
+- `-N|--initial-network INITIAL_NETWORK`: the initial network to attach the service to
 - `-p|--password PASSWORD`: override the user-level service password
+- `-P|--post-create-network NETWORKS`: a comma-separated list of networks to attach the service container to after service creation
 - `-r|--root-password PASSWORD`: override the root-level service password
+- `-S|--post-start-network NETWORKS`: a comma-separated list of networks to attach the service container to after service start
 - `-s|--shm-size SHM_SIZE`: override shared memory size for mariadb docker container
 
 Create a mariadb service named lollipop:
@@ -88,7 +93,7 @@ export MARIADB_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
 dokku mariadb:create lollipop
 ```
 
-You can also specify custom environment variables to start the mariadb service in semi-colon separated form.
+You can also specify custom environment variables to start the mariadb service in semicolon-separated form.
 
 ```shell
 export MARIADB_CUSTOM_ENV="USER=alpha;HOST=beta"
@@ -110,7 +115,10 @@ flags:
 - `--exposed-ports`: show service exposed ports
 - `--id`: show the service container id
 - `--internal-ip`: show the service internal ip
+- `--initial-network`: show the initial network being connected to
 - `--links`: show the service app links
+- `--post-create-network`: show the networks to attach to after service container creation
+- `--post-start-network`: show the networks to attach to after service container start
 - `--service-root`: show the service root directory
 - `--status`: show the service running status
 - `--version`: show the service image version
@@ -130,7 +138,10 @@ dokku mariadb:info lollipop --dsn
 dokku mariadb:info lollipop --exposed-ports
 dokku mariadb:info lollipop --id
 dokku mariadb:info lollipop --internal-ip
+dokku mariadb:info lollipop --initial-network
 dokku mariadb:info lollipop --links
+dokku mariadb:info lollipop --post-create-network
+dokku mariadb:info lollipop --post-start-network
 dokku mariadb:info lollipop --service-root
 dokku mariadb:info lollipop --status
 dokku mariadb:info lollipop --version
@@ -140,7 +151,7 @@ dokku mariadb:info lollipop --version
 
 ```shell
 # usage
-dokku mariadb:list 
+dokku mariadb:list
 ```
 
 List all services:
@@ -189,6 +200,7 @@ flags:
 
 - `-a|--alias "BLUE_DATABASE"`: an alternative alias to use for linking to an app via environment variable
 - `-q|--querystring "pool=5"`: ampersand delimited querystring arguments to append to the service link
+- `-n|--no-restart "false"`: whether or not to restart the app on link (default: true)
 
 A mariadb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our `playground` app.
 
@@ -241,12 +253,41 @@ mysql2://mariadb:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
 dokku mariadb:unlink <service> <app>
 ```
 
+flags:
+
+- `-n|--no-restart "false"`: whether or not to restart the app on unlink (default: true)
+
 You can unlink a mariadb service:
 
 > NOTE: this will restart your app and unset related environment variables
 
 ```shell
 dokku mariadb:unlink lollipop playground
+```
+
+### set or clear a property for a service
+
+```shell
+# usage
+dokku mariadb:set <service> <key> <value>
+```
+
+Set the network to attach after the service container is started:
+
+```shell
+dokku mariadb:set lollipop post-create-network custom-network
+```
+
+Set multiple networks:
+
+```shell
+dokku mariadb:set lollipop post-create-network custom-network,other-network
+```
+
+Unset the post-create-network value:
+
+```shell
+dokku mariadb:set lollipop post-create-network
 ```
 
 ### Service Lifecycle
@@ -370,10 +411,23 @@ dokku mariadb:start lollipop
 dokku mariadb:stop <service>
 ```
 
-Stop the service and the running container:
+Stop the service and removes the running container:
 
 ```shell
 dokku mariadb:stop lollipop
+```
+
+### pause a running mariadb service
+
+```shell
+# usage
+dokku mariadb:pause <service>
+```
+
+Pause the running container for the service:
+
+```shell
+dokku mariadb:pause lollipop
 ```
 
 ### graceful shutdown and restart of the mariadb service container
@@ -402,7 +456,10 @@ flags:
 - `-C|--custom-env "USER=alpha;HOST=beta"`: semi-colon delimited environment variables to start the service with
 - `-i|--image IMAGE`: the image name to start the service with
 - `-I|--image-version IMAGE_VERSION`: the image version to start the service with
-- `-R|--restart-apps "true"`: whether to force an app restart
+- `-N|--initial-network INITIAL_NETWORK`: the initial network to attach the service to
+- `-P|--post-create-network NETWORKS`: a comma-separated list of networks to attach the service container to after service creation
+- `-R|--restart-apps "true"`: whether or not to force an app restart (default: false)
+- `-S|--post-start-network NETWORKS`: a comma-separated list of networks to attach the service container to after service start
 - `-s|--shm-size SHM_SIZE`: override shared memory size for mariadb docker container
 
 You can upgrade an existing service to a new image or image-version:
@@ -441,9 +498,12 @@ flags:
 - `-C|--custom-env "USER=alpha;HOST=beta"`: semi-colon delimited environment variables to start the service with
 - `-i|--image IMAGE`: the image name to start the service with
 - `-I|--image-version IMAGE_VERSION`: the image version to start the service with
-- `-m|--memory MEMORY`: container memory limit (default: unlimited)
+- `-m|--memory MEMORY`: container memory limit in megabytes (default: unlimited)
+- `-N|--initial-network INITIAL_NETWORK`: the initial network to attach the service to
 - `-p|--password PASSWORD`: override the user-level service password
+- `-P|--post-create-network NETWORKS`: a comma-separated list of networks to attach the service container to after service creation
 - `-r|--root-password PASSWORD`: override the root-level service password
+- `-S|--post-start-network NETWORKS`: a comma-separated list of networks to attach the service container to after service start
 - `-s|--shm-size SHM_SIZE`: override shared memory size for mariadb docker container
 
 You can clone an existing service to a new one:
@@ -679,8 +739,8 @@ Remove the scheduled backup from cron:
 dokku mariadb:backup-unschedule lollipop
 ```
 
-### Disabling `docker pull` calls
+### Disabling `docker image pull` calls
 
-If you wish to disable the `docker pull` calls that the plugin triggers, you may set the `MARIADB_DISABLE_PULL` environment variable to `true`. Once disabled, you will need to pull the service image you wish to deploy as shown in the `stderr` output.
+If you wish to disable the `docker image pull` calls that the plugin triggers, you may set the `MARIADB_DISABLE_PULL` environment variable to `true`. Once disabled, you will need to pull the service image you wish to deploy as shown in the `stderr` output.
 
-Please ensure the proper images are in place when `docker pull` is disabled.
+Please ensure the proper images are in place when `docker image pull` is disabled.
