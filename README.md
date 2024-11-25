@@ -24,8 +24,10 @@ mariadb:backup-deauth <service>                    # remove backup authenticatio
 mariadb:backup-schedule <service> <schedule> <bucket-name> [--use-iam] # schedule a backup of the mariadb service
 mariadb:backup-schedule-cat <service>              # cat the contents of the configured backup cronfile for the service
 mariadb:backup-set-encryption <service> <passphrase> # set encryption for all future backups of mariadb service
+mariadb:backup-set-public-key-encryption <service> <public-key-id> # set GPG Public Key encryption for all future backups of mariadb service
 mariadb:backup-unschedule <service>                # unschedule the backup of the mariadb service
 mariadb:backup-unset-encryption <service>          # unset encryption for future backups of the mariadb service
+mariadb:backup-unset-public-key-encryption <service> # unset GPG Public Key encryption for future backups of the mariadb service
 mariadb:clone <service> <new-service> [--clone-flags...] # create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <service>                          # connect to the service via the mariadb connection tool
 mariadb:create <service> [--create-flags...]       # create a mariadb service
@@ -675,6 +677,19 @@ Set the GPG-compatible passphrase for encrypting backups for backups:
 dokku mariadb:backup-set-encryption lollipop
 ```
 
+### set GPG Public Key encryption for all future backups of mariadb service
+
+```shell
+# usage
+dokku mariadb:backup-set-public-key-encryption <service> <public-key-id>
+```
+
+Set the `GPG` Public Key for encrypting backups:
+
+```shell
+dokku mariadb:backup-set-public-key-encryption lollipop
+```
+
 ### unset encryption for future backups of the mariadb service
 
 ```shell
@@ -686,6 +701,19 @@ Unset the `GPG` encryption passphrase for backups:
 
 ```shell
 dokku mariadb:backup-unset-encryption lollipop
+```
+
+### unset GPG Public Key encryption for future backups of the mariadb service
+
+```shell
+# usage
+dokku mariadb:backup-unset-public-key-encryption <service>
+```
+
+Unset the `GPG` Public Key encryption for backups:
+
+```shell
+dokku mariadb:backup-unset-public-key-encryption lollipop
 ```
 
 ### schedule a backup of the mariadb service
