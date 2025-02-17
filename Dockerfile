@@ -1,1 +1,1 @@
-FROM mariadb:11.6.2
+FROM mariadb:11.7.2
