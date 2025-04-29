@@ -729,7 +729,7 @@ flags:
 
 Schedule a backup:
 
-> 'schedule' is a crontab expression, eg. "0 3 ** *" for each day at 3am
+> 'schedule' is a crontab expression, eg. "0 3 * * *" for each day at 3am
 
 ```shell
 dokku mariadb:backup-schedule lollipop "0 3 * * *" my-s3-bucket
