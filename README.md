@@ -1,6 +1,6 @@
 # dokku mariadb [![Build Status](https://img.shields.io/github/actions/workflow/status/dokku/dokku-mariadb/ci.yml?branch=master&style=flat-square "Build Status")](https://github.com/dokku/dokku-mariadb/actions/workflows/ci.yml?query=branch%3Amaster) [![IRC Network](https://img.shields.io/badge/irc-libera-blue.svg?style=flat-square "IRC Libera")](https://webchat.libera.chat/?channels=dokku)
 
-Official mariadb plugin for dokku. Currently defaults to installing [mariadb 11.7.2](https://hub.docker.com/_/mariadb/).
+Official mariadb plugin for dokku. Currently defaults to installing [mariadb 11.8.2](https://hub.docker.com/_/mariadb/).
 
 ## Requirements
 
