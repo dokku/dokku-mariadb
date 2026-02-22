@@ -1,4 +1,4 @@
 [plugin]
 description = "dokku mariadb service plugin"
-version = "1.45.1"
+version = "1.45.2"
 [plugin.config]
