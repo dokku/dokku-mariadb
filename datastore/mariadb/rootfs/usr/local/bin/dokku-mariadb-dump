@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Runs whichever dump tool this image ships, for the same reason the client
+# wrapper exists.
+set -eo pipefail
+
+if command -v mariadb-dump >/dev/null 2>&1; then
+  exec mariadb-dump "$@"
+fi
+
+exec mysqldump "$@"

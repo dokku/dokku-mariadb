@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Runs whichever client this image ships.
+#
+# MariaDB renamed its tools: 12 has mariadb and no mysql, older images have
+# mysql and no mariadb, and a service can pin either. Choosing here rather than
+# in the command means the choice is made where both names can be seen, and the
+# arguments are passed through untouched rather than rebuilt inside a shell
+# string where a quote in a password would end it.
+set -eo pipefail
+
+if command -v mariadb >/dev/null 2>&1; then
+  exec mariadb "$@"
+fi
+
+exec mysql "$@"
