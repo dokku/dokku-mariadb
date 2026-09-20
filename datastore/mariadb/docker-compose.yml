@@ -1,0 +1,88 @@
+---
+services:
+  mariadb:
+    image: "{{ .Image }}:{{ .ImageVersion }}"
+
+    # the image's entrypoint builds the database and both accounts from these on
+    # first boot, so there is no command of our own
+    environment:
+      MYSQL_DATABASE: "{{ .Database }}"
+      MYSQL_PASSWORD: "{{ .Secret.password }}"
+      MYSQL_ROOT_PASSWORD: "{{ .Secret.root_password }}"
+      MYSQL_USER: mariadb
+
+    volumes:
+      - type: bind
+        source: "{{ .HostRoot }}/config"
+        target: /etc/mysql/conf.d
+      - type: bind
+        source: "{{ .HostRoot }}/data"
+        target: /var/lib/mysql
+
+    configs:
+      - source: disable_performance_schema
+        target: /etc/mysql/conf.d/disable_performance_schema.cnf
+      - source: charset_utf8
+        target: /etc/mysql/conf.d/charset_utf8.cnf
+
+    ports:
+      - name: native
+        target: 3306
+        primary: true
+
+configs:
+  disable_performance_schema:
+    content: |
+      [mysqld]
+      performance_schema = 0
+
+  charset_utf8:
+    content: |
+      [mysqld]
+      character-set-server = utf8mb4
+      collation-server = utf8mb4_unicode_ci
+
+x-dokku:
+  plugin: mariadb
+  title: MariaDB
+
+  # mysql rather than mariadb: a linked app talks to it with a mysql driver, and
+  # this is the scheme the bash plugin has always handed over
+  scheme: mysql
+  alias: DATABASE
+  alt_alias: DOKKU_MARIADB
+
+  dsn: "{{ .Scheme }}://mariadb:{{ .Secret.password }}@{{ .Host }}:{{ .Port.native }}/{{ .Database }}"
+  wait: native
+
+  secrets:
+    password:
+      file: PASSWORD
+      length: 16
+      env: SERVICE_PASSWORD
+    root_password:
+      file: ROOTPASSWORD
+      length: 16
+      env: SERVICE_ROOT_PASSWORD
+
+  commands:
+    # the password goes in MYSQL_PWD rather than on the command line, so it is
+    # not in the container's process table. The bash plugin interpolates it into
+    # a shell string instead, where a quote in a password ends the string.
+    connect:
+      exec: ["dokku-mariadb-client", "--user=mariadb", "--database={{ .Database }}"]
+      env:
+        MYSQL_PWD: "{{ .Secret.password }}"
+        LANG: C.UTF-8
+        LC_ALL: C.UTF-8
+
+    export:
+      exec: ["dokku-mariadb-dump", "--user=mariadb", "{{ .Database }}"]
+      env:
+        MYSQL_PWD: "{{ .Secret.password }}"
+
+    import:
+      stdin: true
+      exec: ["dokku-mariadb-client", "--user=mariadb", "{{ .Database }}"]
+      env:
+        MYSQL_PWD: "{{ .Secret.password }}"

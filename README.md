@@ -1,56 +1,56 @@
 # dokku mariadb [![Build Status](https://img.shields.io/github/actions/workflow/status/dokku/dokku-mariadb/ci.yml?branch=master&style=flat-square "Build Status")](https://github.com/dokku/dokku-mariadb/actions/workflows/ci.yml?query=branch%3Amaster) [![IRC Network](https://img.shields.io/badge/irc-libera-blue.svg?style=flat-square "IRC Libera")](https://webchat.libera.chat/?channels=dokku)
 
-Official mariadb plugin for dokku. Currently defaults to installing [mariadb 12.2.2](https://hub.docker.com/_/mariadb/).
+Official mariadb plugin for dokku. Currently defaults to installing [mariadb 12.3.2](https://hub.docker.com/_/mariadb/).
 
 ## Requirements
 
-- dokku 0.19.x+
+- dokku 0.35.x+
 - docker 1.8.x
 
 ## Installation
 
 ```shell
-# on 0.19.x+
+# on 0.35.x+
 sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git --name mariadb
 ```
 
 ## Commands
 
 ```
-mariadb:app-links <app>                            # list all mariadb service links for a given app
-mariadb:backup <service> <bucket-name> [--use-iam] # create a backup of the mariadb service to an existing s3 bucket
-mariadb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url> # set up authentication for backups on the mariadb service
-mariadb:backup-deauth <service>                    # remove backup authentication for the mariadb service
-mariadb:backup-schedule <service> <schedule> <bucket-name> [--use-iam] # schedule a backup of the mariadb service
+mariadb:app-links [<app>]                          # list all MariaDB service links for a given app
+mariadb:backup <service> <bucket-name> [-u|--use-iam] # create a backup of the MariaDB service to an existing s3 bucket
+mariadb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url> # set up authentication for backups on the MariaDB service
+mariadb:backup-deauth <service>                    # remove backup authentication for the MariaDB service
+mariadb:backup-schedule <service> <schedule> <bucket-name> [-u|--use-iam] # schedule a backup of the MariaDB service
 mariadb:backup-schedule-cat <service>              # cat the contents of the configured backup cronfile for the service
-mariadb:backup-set-encryption <service> <passphrase> # set encryption for all future backups of mariadb service
-mariadb:backup-set-public-key-encryption <service> <public-key-id> # set GPG Public Key encryption for all future backups of mariadb service
-mariadb:backup-unschedule <service>                # unschedule the backup of the mariadb service
-mariadb:backup-unset-encryption <service>          # unset encryption for future backups of the mariadb service
-mariadb:backup-unset-public-key-encryption <service> # unset GPG Public Key encryption for future backups of the mariadb service
+mariadb:backup-set-encryption <service> <passphrase> # set encryption for all future backups of MariaDB service
+mariadb:backup-set-public-key-encryption <service> <public-key-id> # set GPG Public Key encryption for all future backups of MariaDB service
+mariadb:backup-unschedule <service>                # unschedule the backup of the MariaDB service
+mariadb:backup-unset-encryption <service>          # unset encryption for future backups of the MariaDB service
+mariadb:backup-unset-public-key-encryption <service> # unset GPG Public Key encryption for future backups of the MariaDB service
 mariadb:clone <service> <new-service> [--clone-flags...] # create container <new-name> then copy data from <name> into <new-name>
 mariadb:connect <service>                          # connect to the service via the mariadb connection tool
-mariadb:create <service> [--create-flags...]       # create a mariadb service
-mariadb:destroy <service> [-f|--force]             # delete the mariadb service/data/container if there are no links left
-mariadb:enter <service>                            # enter or run a command in a running mariadb service container
-mariadb:exists <service>                           # check if the mariadb service exists
-mariadb:export <service>                           # export a dump of the mariadb service database
-mariadb:expose <service> <ports...>                # expose a mariadb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
-mariadb:import <service>                           # import a dump into the mariadb service database
-mariadb:info <service> [--single-info-flag]        # print the service information
-mariadb:link <service> <app> [--link-flags...]     # link the mariadb service to the app
-mariadb:linked <service> <app>                     # check if the mariadb service is linked to an app
-mariadb:links <service>                            # list all apps linked to the mariadb service
-mariadb:list                                       # list all mariadb services
-mariadb:logs <service> [-t|--tail] <tail-num-optional> # print the most recent log(s) for this service
-mariadb:pause <service>                            # pause a running mariadb service
-mariadb:promote <service> <app>                    # promote service <service> as DATABASE_URL in <app>
-mariadb:restart <service>                          # graceful shutdown and restart of the mariadb service container
+mariadb:create <service> [--create-flags...]       # create a MariaDB service
+mariadb:destroy <service> [-f|--force]             # delete the MariaDB service/data/container if there are no links left
+mariadb:enter <service>                            # enter or run a command in a running MariaDB service container
+mariadb:exists <service>                           # check if the MariaDB service exists
+mariadb:export <service>                           # export a dump of the MariaDB service database
+mariadb:expose <service> <ports...>                # expose a MariaDB service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
+mariadb:import <service>                           # import a dump into the MariaDB service database
+mariadb:info <service> [--info-flags...]           # print the service information
+mariadb:link <service> [<app>] [--link-flags...]   # link the MariaDB service to the app
+mariadb:linked <service> [<app>]                   # check if the MariaDB service is linked to an app
+mariadb:links <service>                            # list all apps linked to the MariaDB service
+mariadb:list                                       # list all MariaDB services
+mariadb:logs <service> [-t|--tail [<tail-num>]]    # print the most recent log(s) for this service
+mariadb:pause <service>                            # pause a running MariaDB service
+mariadb:promote <service> [<app>]                  # promote service <service> as DATABASE_URL in <app>
+mariadb:restart <service>                          # graceful shutdown and restart of the MariaDB service container
 mariadb:set <service> <key> <value>                # set or clear a property for a service
-mariadb:start <service>                            # start a previously stopped mariadb service
-mariadb:stop <service>                             # stop a running mariadb service
-mariadb:unexpose <service>                         # unexpose a previously exposed mariadb service
-mariadb:unlink <service> <app>                     # unlink the mariadb service from the app
+mariadb:start <service>                            # start a previously stopped MariaDB service
+mariadb:stop <service>                             # stop a running MariaDB service
+mariadb:unexpose <service>                         # unexpose a previously exposed MariaDB service
+mariadb:unlink <service> [<app>] [-n|--no-restart] # unlink the MariaDB service from the app
 mariadb:upgrade <service> [--upgrade-flags...]     # upgrade service <service> to the specified versions
 ```
 
@@ -60,7 +60,7 @@ Help for any commands can be displayed by specifying the command as an argument 
 
 ### Basic Usage
 
-### create a mariadb service
+### create a MariaDB service
 
 ```shell
 # usage
@@ -69,17 +69,17 @@ dokku mariadb:create <service> [--create-flags...]
 
 flags:
 
-- `-c|--config-options "--args --go=here"`: extra arguments to pass to the container create command (default: `None`)
-- `-C|--custom-env "USER=alpha;HOST=beta"`: semi-colon delimited environment variables to start the service with
-- `-i|--image IMAGE`: the image name to start the service with
-- `-I|--image-version IMAGE_VERSION`: the image version to start the service with
-- `-m|--memory MEMORY`: container memory limit in megabytes (default: unlimited)
-- `-N|--initial-network INITIAL_NETWORK`: the initial network to attach the service to
-- `-p|--password PASSWORD`: override the user-level service password
-- `-P|--post-create-network NETWORKS`: a comma-separated list of networks to attach the service container to after service creation
-- `-r|--root-password PASSWORD`: override the root-level service password
-- `-S|--post-start-network NETWORKS`: a comma-separated list of networks to attach the service container to after service start
-- `-s|--shm-size SHM_SIZE`: override shared memory size for mariadb docker container
+- `-c|--config-options <string>`: extra arguments to pass to the container create command
+- `-C|--custom-env <string>`: semi-colon delimited environment variables to start the service with
+- `-i|--image <string>`: the image name to start the service with
+- `-I|--image-version <string>`: the image version to start the service with
+- `-N|--initial-network <string>`: the initial network to attach the service to
+- `-m|--memory <int>`: container memory limit in megabytes (default: unlimited)
+- `-p|--password <string>`: override the user-level service password
+- `-P|--post-create-network <strings>`: a comma-separated list of networks to attach the service container to after service creation
+- `-S|--post-start-network <strings>`: a comma-separated list of networks to attach the service container to after service start
+- `-r|--root-password <string>`: override the root-level service password
+- `-s|--shm-size <string>`: override shared memory size for the service docker container
 
 Create a mariadb service named lollipop:
 
@@ -91,7 +91,7 @@ You can also specify the image and image version to use for the service. It *mus
 
 ```shell
 export MARIADB_IMAGE="mariadb"
-export MARIADB_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
+export MARIADB_IMAGE_VERSION="12.3.2"
 dokku mariadb:create lollipop
 ```
 
@@ -102,11 +102,28 @@ export MARIADB_CUSTOM_ENV="USER=alpha;HOST=beta"
 dokku mariadb:create lollipop
 ```
 
+### delete the MariaDB service/data/container if there are no links left
+
+```shell
+# usage
+dokku mariadb:destroy <service> [-f|--force]
+```
+
+flags:
+
+- `-f|--force`: force the destruction of the service
+
+Destroy the service, it's data, and the running container:
+
+```shell
+dokku mariadb:destroy lollipop
+```
+
 ### print the service information
 
 ```shell
 # usage
-dokku mariadb:info <service> [--single-info-flag]
+dokku mariadb:info <service> [--info-flags...]
 ```
 
 flags:
@@ -116,8 +133,8 @@ flags:
 - `--dsn`: show the service DSN
 - `--exposed-ports`: show service exposed ports
 - `--id`: show the service container id
-- `--internal-ip`: show the service internal ip
 - `--initial-network`: show the initial network being connected to
+- `--internal-ip`: show the service internal ip
 - `--links`: show the service app links
 - `--post-create-network`: show the networks to attach to after service container creation
 - `--post-start-network`: show the networks to attach to after service container start
@@ -149,7 +166,7 @@ dokku mariadb:info lollipop --status
 dokku mariadb:info lollipop --version
 ```
 
-### list all mariadb services
+### list all MariaDB services
 
 ```shell
 # usage
@@ -166,12 +183,12 @@ dokku mariadb:list
 
 ```shell
 # usage
-dokku mariadb:logs <service> [-t|--tail] <tail-num-optional>
+dokku mariadb:logs <service> [-t|--tail [<tail-num>]]
 ```
 
 flags:
 
-- `-t|--tail [<tail-num>]`: do not stop when end of the logs are reached and wait for additional output
+- `-t|--tail <int>`: tail the logs, optionally showing this many lines
 
 You can tail logs for a particular service:
 
@@ -185,24 +202,24 @@ By default, logs will not be tailed, but you can do this with the --tail flag:
 dokku mariadb:logs lollipop --tail
 ```
 
-The default tail setting is to show all logs, but an initial count can also be specified:
+By default the last 100 lines are shown, but a different count can be specified:
 
 ```shell
-dokku mariadb:logs lollipop --tail 5
+dokku mariadb:logs lollipop --tail=5
 ```
 
-### link the mariadb service to the app
+### link the MariaDB service to the app
 
 ```shell
 # usage
-dokku mariadb:link <service> <app> [--link-flags...]
+dokku mariadb:link <service> [<app>] [--link-flags...]
 ```
 
 flags:
 
-- `-a|--alias "BLUE_DATABASE"`: an alternative alias to use for linking to an app via environment variable
-- `-q|--querystring "pool=5"`: ampersand delimited querystring arguments to append to the service link
-- `-n|--no-restart "false"`: whether or not to restart the app on link (default: true)
+- `-a|--alias <string>`: an alternative alias to use for the config url exported to the app
+- `-n|--no-restart`: whether to skip restarting the app
+- `-q|--querystring <string>`: ampersand delimited querystring arguments to append to the service url
 
 A mariadb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our `playground` app.
 
@@ -226,7 +243,7 @@ DOKKU_MARIADB_LOLLIPOP_PORT_3306_TCP_ADDR=172.17.0.1
 The following will be set on the linked application by default:
 
 ```
-DATABASE_URL=mysql://mariadb:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
+DATABASE_URL=mysql://:SOME_PASSWORD@dokku-mariadb-lollipop:3306
 ```
 
 The host exposed here only works internally in docker containers. If you want your container to be reachable from outside, you should use the `expose` subcommand. Another service can be linked to your app:
@@ -245,19 +262,19 @@ dokku mariadb:link lollipop playground
 This will cause `DATABASE_URL` to be set as:
 
 ```
-mysql2://mariadb:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
+mysql2://:SOME_PASSWORD@dokku-mariadb-lollipop:3306
 ```
 
-### unlink the mariadb service from the app
+### unlink the MariaDB service from the app
 
 ```shell
 # usage
-dokku mariadb:unlink <service> <app>
+dokku mariadb:unlink <service> [<app>] [-n|--no-restart]
 ```
 
 flags:
 
-- `-n|--no-restart "false"`: whether or not to restart the app on unlink (default: true)
+- `-n|--no-restart`: whether to skip restarting the app
 
 You can unlink a mariadb service:
 
@@ -292,6 +309,12 @@ Unset the post-create-network value:
 dokku mariadb:set lollipop post-create-network
 ```
 
+Set the keyserver a public key for backup encryption is fetched from:
+
+```shell
+dokku mariadb:set lollipop backup-keyserver hkp://keys.example.com
+```
+
 ### Service Lifecycle
 
 The lifecycle of each service can be managed through the following commands:
@@ -311,7 +334,7 @@ Connect to the service via the mariadb connection tool:
 dokku mariadb:connect lollipop
 ```
 
-### enter or run a command in a running mariadb service container
+### enter or run a command in a running MariaDB service container
 
 ```shell
 # usage
@@ -332,7 +355,7 @@ You may also run a command directly against the service. Filesystem changes will
 dokku mariadb:enter lollipop touch /tmp/test
 ```
 
-### expose a mariadb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
+### expose a MariaDB service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
 
 ```shell
 # usage
@@ -351,7 +374,7 @@ Expose the service on the service's normal ports, with the first on a specified 
 dokku mariadb:expose lollipop 127.0.0.1:3306
 ```
 
-### unexpose a previously exposed mariadb service
+### unexpose a previously exposed MariaDB service
 
 ```shell
 # usage
@@ -368,13 +391,13 @@ dokku mariadb:unexpose lollipop
 
 ```shell
 # usage
-dokku mariadb:promote <service> <app>
+dokku mariadb:promote <service> [<app>]
 ```
 
 If you have a mariadb service linked to an app and try to link another mariadb service another link environment variable will be generated automatically:
 
 ```
-DOKKU_DATABASE_BLUE_URL=mysql://other_service:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
+DOKKU_DATABASE_BLUE_URL=mysql://:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
 ```
 
 You can promote the new service to be the primary one:
@@ -388,12 +411,12 @@ dokku mariadb:promote other_service playground
 This will replace `DATABASE_URL` with the url from other_service and generate another environment variable to hold the previous value if necessary. You could end up with the following for example:
 
 ```
-DATABASE_URL=mysql://other_service:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
-DOKKU_DATABASE_BLUE_URL=mysql://other_service:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
-DOKKU_DATABASE_SILVER_URL=mysql://lollipop:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
+DATABASE_URL=mysql://:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
+DOKKU_DATABASE_BLUE_URL=mysql://:ANOTHER_PASSWORD@dokku-mariadb-other-service:3306/other_service
+DOKKU_DATABASE_SILVER_URL=mysql://:SOME_PASSWORD@dokku-mariadb-lollipop:3306/lollipop
 ```
 
-### start a previously stopped mariadb service
+### start a previously stopped MariaDB service
 
 ```shell
 # usage
@@ -406,7 +429,7 @@ Start the service:
 dokku mariadb:start lollipop
 ```
 
-### stop a running mariadb service
+### stop a running MariaDB service
 
 ```shell
 # usage
@@ -419,7 +442,7 @@ Stop the service and removes the running container:
 dokku mariadb:stop lollipop
 ```
 
-### pause a running mariadb service
+### pause a running MariaDB service
 
 ```shell
 # usage
@@ -432,7 +455,7 @@ Pause the running container for the service:
 dokku mariadb:pause lollipop
 ```
 
-### graceful shutdown and restart of the mariadb service container
+### graceful shutdown and restart of the MariaDB service container
 
 ```shell
 # usage
@@ -454,15 +477,15 @@ dokku mariadb:upgrade <service> [--upgrade-flags...]
 
 flags:
 
-- `-c|--config-options "--args --go=here"`: extra arguments to pass to the container create command (default: `None`)
-- `-C|--custom-env "USER=alpha;HOST=beta"`: semi-colon delimited environment variables to start the service with
-- `-i|--image IMAGE`: the image name to start the service with
-- `-I|--image-version IMAGE_VERSION`: the image version to start the service with
-- `-N|--initial-network INITIAL_NETWORK`: the initial network to attach the service to
-- `-P|--post-create-network NETWORKS`: a comma-separated list of networks to attach the service container to after service creation
-- `-R|--restart-apps "true"`: whether or not to force an app restart (default: false)
-- `-S|--post-start-network NETWORKS`: a comma-separated list of networks to attach the service container to after service start
-- `-s|--shm-size SHM_SIZE`: override shared memory size for mariadb docker container
+- `-c|--config-options <string>`: extra arguments to pass to the container create command
+- `-C|--custom-env <string>`: semi-colon delimited environment variables to start the service with
+- `-i|--image <string>`: the image to upgrade the service to
+- `-I|--image-version <string>`: the image version to upgrade the service to
+- `-N|--initial-network <string>`: the initial network to attach the service to
+- `-P|--post-create-network <strings>`: a comma-separated list of networks to attach the service container to after service creation
+- `-S|--post-start-network <strings>`: a comma-separated list of networks to attach the service container to after service start
+- `-R|--restart-apps`: whether to stop and start the linked apps around the upgrade
+- `-s|--shm-size <string>`: override shared memory size for the service docker container
 
 You can upgrade an existing service to a new image or image-version:
 
@@ -474,11 +497,11 @@ dokku mariadb:upgrade lollipop
 
 Service scripting can be executed using the following commands:
 
-### list all mariadb service links for a given app
+### list all MariaDB service links for a given app
 
 ```shell
 # usage
-dokku mariadb:app-links <app>
+dokku mariadb:app-links [<app>]
 ```
 
 List all mariadb services that are linked to the `playground` app.
@@ -496,17 +519,15 @@ dokku mariadb:clone <service> <new-service> [--clone-flags...]
 
 flags:
 
-- `-c|--config-options "--args --go=here"`: extra arguments to pass to the container create command (default: `None`)
-- `-C|--custom-env "USER=alpha;HOST=beta"`: semi-colon delimited environment variables to start the service with
-- `-i|--image IMAGE`: the image name to start the service with
-- `-I|--image-version IMAGE_VERSION`: the image version to start the service with
-- `-m|--memory MEMORY`: container memory limit in megabytes (default: unlimited)
-- `-N|--initial-network INITIAL_NETWORK`: the initial network to attach the service to
-- `-p|--password PASSWORD`: override the user-level service password
-- `-P|--post-create-network NETWORKS`: a comma-separated list of networks to attach the service container to after service creation
-- `-r|--root-password PASSWORD`: override the root-level service password
-- `-S|--post-start-network NETWORKS`: a comma-separated list of networks to attach the service container to after service start
-- `-s|--shm-size SHM_SIZE`: override shared memory size for mariadb docker container
+- `-c|--config-options <string>`: extra arguments to pass to the container create command
+- `-C|--custom-env <string>`: semi-colon delimited environment variables to start the service with
+- `-N|--initial-network <string>`: the initial network to attach the service to
+- `-m|--memory <int>`: container memory limit in megabytes (default: unlimited)
+- `-p|--password <string>`: override the user-level service password
+- `-P|--post-create-network <strings>`: a comma-separated list of networks to attach the service container to after service creation
+- `-S|--post-start-network <strings>`: a comma-separated list of networks to attach the service container to after service start
+- `-r|--root-password <string>`: override the root-level service password
+- `-s|--shm-size <string>`: override shared memory size for the service docker container
 
 You can clone an existing service to a new one:
 
@@ -514,7 +535,7 @@ You can clone an existing service to a new one:
 dokku mariadb:clone lollipop lollipop-2
 ```
 
-### check if the mariadb service exists
+### check if the MariaDB service exists
 
 ```shell
 # usage
@@ -527,11 +548,11 @@ Here we check if the lollipop mariadb service exists.
 dokku mariadb:exists lollipop
 ```
 
-### check if the mariadb service is linked to an app
+### check if the MariaDB service is linked to an app
 
 ```shell
 # usage
-dokku mariadb:linked <service> <app>
+dokku mariadb:linked <service> [<app>]
 ```
 
 Here we check if the lollipop mariadb service is linked to the `playground` app.
@@ -540,7 +561,7 @@ Here we check if the lollipop mariadb service is linked to the `playground` app.
 dokku mariadb:linked lollipop playground
 ```
 
-### list all apps linked to the mariadb service
+### list all apps linked to the MariaDB service
 
 ```shell
 # usage
@@ -557,7 +578,7 @@ dokku mariadb:links lollipop
 
 The underlying service data can be imported and exported with the following commands:
 
-### import a dump into the mariadb service database
+### import a dump into the MariaDB service database
 
 ```shell
 # usage
@@ -570,7 +591,7 @@ Import a datastore dump:
 dokku mariadb:import lollipop < data.dump
 ```
 
-### export a dump of the mariadb service database
+### export a dump of the MariaDB service database
 
 ```shell
 # usage
@@ -601,7 +622,7 @@ The underlying core backup script is present [here](https://github.com/dokku/doc
 
 Backups can be performed using the backup commands:
 
-### set up authentication for backups on the mariadb service
+### set up authentication for backups on the MariaDB service
 
 ```shell
 # usage
@@ -632,7 +653,7 @@ More specific example for minio auth:
 dokku mariadb:backup-auth lollipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us-east-1 s3v4 https://YOURMINIOSERVICE
 ```
 
-### remove backup authentication for the mariadb service
+### remove backup authentication for the MariaDB service
 
 ```shell
 # usage
@@ -645,18 +666,18 @@ Remove s3 authentication:
 dokku mariadb:backup-deauth lollipop
 ```
 
-### create a backup of the mariadb service to an existing s3 bucket
+### create a backup of the MariaDB service to an existing s3 bucket
 
 ```shell
 # usage
-dokku mariadb:backup <service> <bucket-name> [--use-iam]
+dokku mariadb:backup <service> <bucket-name> [-u|--use-iam]
 ```
 
 flags:
 
 - `-u|--use-iam`: use the IAM profile associated with the current server
 
-Backup the `lollipop` service to the `my-s3-bucket` bucket on `AWS`:`
+Backup the `lollipop` service to the `my-s3-bucket` bucket on `AWS`:
 
 ```shell
 dokku mariadb:backup lollipop my-s3-bucket --use-iam
@@ -668,7 +689,7 @@ Restore a backup file (assuming it was extracted via `tar -xf backup.tgz`):
 dokku mariadb:import lollipop < backup-folder/export
 ```
 
-### set encryption for all future backups of mariadb service
+### set encryption for all future backups of MariaDB service
 
 ```shell
 # usage
@@ -683,7 +704,7 @@ dokku mariadb:backup-set-encryption lollipop
 
 Public key encryption will take precendence over the passphrase encryption if both types are set.
 
-### set GPG Public Key encryption for all future backups of mariadb service
+### set GPG Public Key encryption for all future backups of MariaDB service
 
 ```shell
 # usage
@@ -696,9 +717,13 @@ Set the `GPG` Public Key for encrypting backups:
 dokku mariadb:backup-set-public-key-encryption lollipop
 ```
 
-This method currently requires the <public-key-id> to be present on the keyserver `keyserver.ubuntu.com`:
+The <public-key-id> is fetched from `keyserver.ubuntu.com`, unless the service names another one with the backup-keyserver property:
 
-### unset encryption for future backups of the mariadb service
+```shell
+dokku mariadb:set lollipop backup-keyserver hkp://keys.example.com
+```
+
+### unset encryption for future backups of the MariaDB service
 
 ```shell
 # usage
@@ -711,7 +736,7 @@ Unset the `GPG` encryption passphrase for backups:
 dokku mariadb:backup-unset-encryption lollipop
 ```
 
-### unset GPG Public Key encryption for future backups of the mariadb service
+### unset GPG Public Key encryption for future backups of the MariaDB service
 
 ```shell
 # usage
@@ -724,11 +749,11 @@ Unset the `GPG` Public Key encryption for backups:
 dokku mariadb:backup-unset-public-key-encryption lollipop
 ```
 
-### schedule a backup of the mariadb service
+### schedule a backup of the MariaDB service
 
 ```shell
 # usage
-dokku mariadb:backup-schedule <service> <schedule> <bucket-name> [--use-iam]
+dokku mariadb:backup-schedule <service> <schedule> <bucket-name> [-u|--use-iam]
 ```
 
 flags:
@@ -762,7 +787,7 @@ Cat the contents of the configured backup cronfile for the service:
 dokku mariadb:backup-schedule-cat lollipop
 ```
 
-### unschedule the backup of the mariadb service
+### unschedule the backup of the MariaDB service
 
 ```shell
 # usage
