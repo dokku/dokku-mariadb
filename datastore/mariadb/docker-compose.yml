@@ -69,8 +69,11 @@ x-dokku:
     # the password goes in MYSQL_PWD rather than on the command line, so it is
     # not in the container's process table. The bash plugin interpolates it into
     # a shell string instead, where a quote in a password ends the string.
+    # --unbuffered flushes each result as it is printed: without a terminal,
+    # as over ssh without -t, the client otherwise holds every result until it
+    # exits.
     connect:
-      exec: ["dokku-mariadb-client", "--user=mariadb", "--database={{ .Database }}"]
+      exec: ["dokku-mariadb-client", "--user=mariadb", "--unbuffered", "--database={{ .Database }}"]
       env:
         MYSQL_PWD: "{{ .Secret.password }}"
         LANG: C.UTF-8
