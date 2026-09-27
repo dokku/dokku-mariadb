@@ -22,7 +22,7 @@ mariadb:backup <service> <bucket-name> [-u|--use-iam] # create a backup of the M
 mariadb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url> # set up authentication for backups on the MariaDB service
 mariadb:backup-deauth <service>                    # remove backup authentication for the MariaDB service
 mariadb:backup-schedule <service> <schedule> <bucket-name> [-u|--use-iam] # schedule a backup of the MariaDB service
-mariadb:backup-schedule-cat <service>              # cat the contents of the configured backup cronfile for the service
+mariadb:backup-schedule-cat <service>              # cat the crontab line of the scheduled backup for the service
 mariadb:backup-set-encryption <service> <passphrase> # set encryption for all future backups of MariaDB service
 mariadb:backup-set-public-key-encryption <service> <public-key-id> # set GPG Public Key encryption for all future backups of MariaDB service
 mariadb:backup-unschedule <service>                # unschedule the backup of the MariaDB service
@@ -36,7 +36,7 @@ mariadb:enter <service>                            # enter or run a command in a
 mariadb:exists <service>                           # check if the MariaDB service exists
 mariadb:export <service>                           # export a dump of the MariaDB service database
 mariadb:expose <service> <ports...>                # expose a MariaDB service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
-mariadb:import <service>                           # import a dump into the MariaDB service database
+mariadb:import <service> [-f|--file <path>]        # import a dump into the MariaDB service database
 mariadb:info [<service>] [--info-flags...]         # print the service information
 mariadb:link <service> [<app>] [--link-flags...]   # link the MariaDB service to the app
 mariadb:linked <service> [<app>]                   # check if the MariaDB service is linked to an app
@@ -503,6 +503,12 @@ Connect to the service via the mariadb connection tool:
 dokku mariadb:connect lollipop
 ```
 
+The connection tool only shows a prompt when it is given a terminal, which ssh allocates when run with -t. Without a terminal, statements are read from stdin instead.
+
+```shell
+dokku mariadb:connect lollipop < statements.txt
+```
+
 ### enter or run a command in a running MariaDB service container
 
 ```shell
@@ -510,7 +516,7 @@ dokku mariadb:connect lollipop
 dokku mariadb:enter <service>
 ```
 
-A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk.
+A shell can be opened against a running service. Filesystem changes will not be saved to disk.
 
 > NOTE: disconnecting from ssh while running this command may leave zombie processes due to moby/moby#9098
 
@@ -783,13 +789,23 @@ The underlying service data can be imported and exported with the following comm
 
 ```shell
 # usage
-dokku mariadb:import <service>
+dokku mariadb:import <service> [-f|--file <path>]
 ```
+
+flags:
+
+- `-f|--file <string>`: a file on the dokku host to import instead of reading stdin
 
 Import a datastore dump:
 
 ```shell
 dokku mariadb:import lollipop < data.dump
+```
+
+A dump that is already on the dokku host can be imported with --file. The path is on the dokku host, not on the machine running ssh.
+
+```shell
+dokku mariadb:import lollipop --file /var/lib/dokku/data/storage/data.dump
 ```
 
 ### export a dump of the MariaDB service database
@@ -820,6 +836,8 @@ You may skip the `backup-auth` step if your dokku install is running within EC2 
 If both passphrase and public key forms of encryption are set, the public key encryption will take precedence.
 
 The underlying core backup script is present [here](https://github.com/dokku/docker-s3backup/blob/main/backup.sh).
+
+Scheduled backups are added to the dokku crontab, and are listed by `dokku cron:list --global`.
 
 Backups can be performed using the backup commands:
 
@@ -963,7 +981,9 @@ flags:
 
 Schedule a backup:
 
-> 'schedule' is a crontab expression, eg. "0 3 * * *" for each day at 3am
+> 'schedule' is a crontab expression, eg. "0 3 * * *" for each day at 3am, or a descriptor such as "@daily". A schedule cron cannot run is refused.
+> the backup is added to the dokku crontab through the cron-entries plugin trigger, so it is listed by "dokku cron:list --global" and its output is appended to /var/log/dokku/mariadb.log
+> NOTE: dokku only writes a crontab when the global scheduler or at least one app uses the docker-local scheduler, so a scheduled backup does not run on a host that only uses k3s or null
 
 ```shell
 dokku mariadb:backup-schedule lollipop "0 3 * * *" my-s3-bucket
@@ -975,14 +995,14 @@ Schedule a backup and authenticate via iam:
 dokku mariadb:backup-schedule lollipop "0 3 * * *" my-s3-bucket --use-iam
 ```
 
-### cat the contents of the configured backup cronfile for the service
+### cat the crontab line of the scheduled backup for the service
 
 ```shell
 # usage
 dokku mariadb:backup-schedule-cat <service>
 ```
 
-Cat the contents of the configured backup cronfile for the service:
+Cat the crontab line of the scheduled backup for the service:
 
 ```shell
 dokku mariadb:backup-schedule-cat lollipop
@@ -995,7 +1015,7 @@ dokku mariadb:backup-schedule-cat lollipop
 dokku mariadb:backup-unschedule <service>
 ```
 
-Remove the scheduled backup from cron:
+Remove the scheduled backup from the dokku crontab:
 
 ```shell
 dokku mariadb:backup-unschedule lollipop
